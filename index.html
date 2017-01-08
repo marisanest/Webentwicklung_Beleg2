@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculate</title>
+    <link rel="stylesheet" type="text/css" href="index/styles.css">
+    <meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+    <div class="content">
+        <form action="index" method="post" id="calculateform">
+            <div class="box one">
+                <div class="header">
+                    <img class="dot" src="images/headerdot.svg" alt="dot">
+                    <span>FLOWMETER TYPES</span>
+                    <img class="help" src="images/help.svg" alt="help">
+                    <img class="info" src="images/info.svg" alt="info">
+                </div>
+                <div class="body">
+                    <div class="left">
+                        <div class="label first">Technology:</div>
+                        <div class="label second">Product line:</div>
+                    </div>
+                    <div class="middle">
+                        <div>
+                            <select class="styled-select light big first technology">
+                                  <option value="0">Please select one technology!</option>
+                                  <option value="1">Coriolis mass flowmeter (RotaMass)</option>
+                                  <option value="2">Variable Area Flowmeter (Rotameter)</option>
+                                  <option value="3">Vortex flowmeter</option>
+                                  <option value="4">Magmeter</option>
+                            </select>
+                        </div>
+                        <div class="productline">
+                            <!--
+                            <select class="styled-select light big disabled productline" name="productline" form="calculateform" disabled>
+                              <option value="rm3">RotaMass 3</option>
+                              <option value="all">All</option>
+                              <option value="rm4">RotaMass 4</option>
+                              <option value="mrm">Metal rotamter</option>
+                              <option value="grm3">Glass rotameter</option>
+                            </select>
+                            -->
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="device">
+                            <!-- <img class="rotamass first" src="images/Rotamass3.svg" alt="rotamass3"> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="box second">
+                <div class="header">
+                    <img class="dot" src="images/headerdot.svg" alt="dot">
+                    <span>PROCESS DATA</span>
+                    <img class="help" src="images/help.svg" alt="help">
+                    <img class="info" src="images/info.svg" alt="info">
+                </div>
+                <div class="body">
+                    <div class="left">
+                        <div class="label first"> Fluid type:</div>
+                    </div>
+                    <div class="middle">
+                        <input class="regular-radio first fluid" type="radio" id="radio-liquid" name="fluid-type" value="liquid" checked/>
+                        <label class="first" for="radio-liquid"></label>
+                        <span class="radio-tag">Liquid</span>
+                        <input class="regular-radio first fluid" type="radio" id="radio-gas" name="fluid-type" value="gas" />
+                        <label class="first gas" for="radio-gas"></label>
+                        <span class="radio-tag gas">Gas</span>
+                    </div>
+                    <div class="right">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="box third">
+                <div class="body">
+                    <div class="left">
+                        <div class="label first">Fluid:</div>
+                        <div class="label second">Formula:</div>
+                    </div>
+                    <div class="middle">
+                        <div class="fluid-name">
+                            <select class="styled-select light big first" name="fluid" form="calculateform">
+                              <option value="1">water</option>
+                              <option value="2">propanol</option>
+                              <option value="3">toluene</option>
+                              <option value="4">acetone</option>
+                            </select>
+                        </div>
+                        <div class="fluid-formula">
+                            <select class="styled-select light big" name="formula" form="calculateform">
+                              <option value="1">H2O</option>
+                              <option value="2">C3H7OH</option>
+                              <option value="3">C6H5CH3</option>
+                              <option value="4">CH3COCH3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <span class="checkbox-tag">Custom fluid</span>
+                        <input type="checkbox" id="checkbox-1-1" class="regular-checkbox" name="customfluid" value="custom" />
+                        <label for="checkbox-1-1"></label>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="box fourth">
+                <div class="body">
+                    <div class="left">
+                        <div class="label first"> Temperature:</div>
+                        <div class="label second"> Pressure:</div>
+                        <div class="label second"> Dynamic viscosity:</div>
+                        <div class="label second"> Operating density:</div>
+                    </div>
+                    <div class="middle">
+                        <div class="first">
+                            <span class="label">Minimum</span>
+                            <span class="label first">Operating</span>
+                            <span class="label second">Maximum</span>
+                        </div>
+                        <div>
+                            <input class="text small" name="temperaturmin" />
+                            <input class="text small operating-temperature" name="temperaturop" value="20" />
+                            <input class="text small" name="temperaturmax" />
+                            <select class="styled-select light small tupl" name="temeraturscala" form="calculateform">
+                            <option value="celsius">°C</option>
+                            <option value="kelvin">K</option>
+                            <option value="fahrenheit">°F</option>
+                          </select>
+                        </div>
+                        <div>
+                            <input class="text small" name="pressuremin" />
+                            <input class="text small operating-pressure" name="pressureop" value="5" />
+                            <input class="text small" name="pressuremax" />
+                            <select class="styled-select light small tupl" name="pressurescala" form="calculateform">
+                            <option value="bar">bar</option>
+                            <option value="kpa">KPa</option>
+                            <option value="ncm">N/cm<sup>3</sup></option>
+                          </select>
+                        </div>
+                        <div>
+                            <input class="text big disabled dynamic-viscosity" readonly="readonly" name="dynamicvis" value="1" />
+                            <select class="styled-select light small" name="dynamicvisscala">
+                            <option value="mpas">mPas</option>
+                            <option value="pas">Pas</option>
+                            <option value="kgms">kg/ms</option>
+                          </select>
+                        </div>
+                        <div>
+                            <input class="text big disabled operating-density" readonly="readonly" name="operatingden" value="" />
+                            <select class="styled-select light small" name="operatingdenscala" form="calculateform">
+                            <option value="kgl">kg/l</option>
+                            <option value="kgm3">kg/m<sup>3</sup></option>
+                            <option value="lbin3">lb/in<sup>3</sup></option>
+                          </select>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div></div>
+                        <div>
+                            <br>
+                            <br>
+                            <select class="styled-select light small" name="result" class="select" form="calculateform">
+                                <option value="abs">absolut</option>
+                                <option value="gauge">gauge</option>
+                              </select>
+                            <img class="info" src="images/info.svg" alt="info">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="box fifth">
+                <div class="body">
+                    <div class="left">
+                        <div class="label first"> Kind of flow:</div>
+                        <div class="label second"> Flow rate:</div>
+                    </div>
+                    <div class="middle">
+                        <div>
+                            <input class="regular-radio first" type="radio" id="radio-volume" name="kind-of-flow" value="volume" />
+                            <label class="first" for="radio-volume"></label>
+                            <span class="radio-tag">Volume flow</span>
+                            <input class="regular-radio first" type="radio" id="radio-mass" name="kind-of-flow" value="mass" checked/>
+                            <label class="first mass" for="radio-mass"></label>
+                            <span class="radio-tag mass">Mass flow</span>
+                        </div>
+                        <div class="second">
+                            <span class="label">Minimum</span>
+                            <span class="label first">Operating</span>
+                            <span class="label second">Maximum</span>
+                            <span class="label third">Design</span>
+                        </div>
+                        <div>
+                            <input class="text small" name="flowratemin" />
+                            <input class="text small" name="flowrateop" />
+                            <input class="text small" name="flowratemax" />
+                            <input class="text middle" name="flowratedes" />
+                        </div>
+                    </div>
+                    <div class="right">
+                        <select class="styled-select light small" name="floeratescala" form="calculateform">
+                            <option value="kgh">kg/h</option>
+                            <option value="kgs">kg/s</option>
+                            <option value="kgmin">kg/min</option>
+                          </select>
+                        <img class="help" src="images/help.svg" alt="help">
+                        <img class="info" src="images/info.svg" alt="info">
+                    </div>
+                </div>
+            </div>
+
+            <div class="box sixth">
+                <div class="header">
+                    <img src="images/headerdotDown.svg" alt="dot" class="dot">
+                    <span>BASIC FILTERS FOR THE RESULT LIST</span>
+                    <img src="images/help.svg" alt="help" class="help">
+                    <img src="images/info.svg" alt="info" class="info">
+                </div>
+                <div class="body">
+                    <div class="left">
+                        <div class="six">
+                            <select class="styled-select dark" form="calculateform">
+                                    <option value="all">All</option>
+                                  </select>
+                            <span> Process connection</span>
+                        </div>
+                        <div class="six">
+                            <select class="styled-select dark" form="calculateform">
+                                    <option value="all">All</option>
+                                  </select>
+                            <span>Transmitter mounting type</span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="six">
+                            <select class="styled-select dark" form="calculateform">
+                                    <option value="all">All</option>
+                                  </select>
+                            <span> Connection size</span>
+                        </div>
+                        <div class="six">
+                            <img class="background" src="images/FilterBackground.svg" alt="filterbackground">
+                            <img class="grip first" src="images/FilterGrip.svg" alt="filtergrip">
+                            <span> Marine approval</span>
+                        </div>
+                        <div class="six">
+                            <img class="background" src="images/FilterBackground.svg" alt="filterbackground">
+                            <img class="grip second" src="images/FilterGrip.svg" alt="filtergrip">
+                            <span> Preferred devices</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div>
+                    <input type="image" src="images/Calculate.svg" alt="calculate">
+                    <span class="calc"> Calculate</span>
+                    <img class="reset" src="images/Reset.svg" alt="reset">
+                    <span class="reset"> Reset</span>
+                    <img class="generate" src="images/GenerateDataSheet.svg" alt="generate">
+                    <span class="generate"> Generate data sheet</span>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="app.js"></script>
+</body>
+
+</html>

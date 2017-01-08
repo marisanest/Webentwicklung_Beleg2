@@ -1,0 +1,544 @@
+body {
+  position: relative;
+}
+
+body .content {
+  font-family: Verdana;
+  width: 700px;
+  position: absolute;
+  right: 50%;
+  transform: translate(+50%, 0)
+}
+
+.box.one{
+  margin-top: 0px;
+}
+
+.box.one .body {
+ height: 56px;
+}
+
+.box.one .body .middle .first {
+  margin-top: 5px;
+  margin-bottom: 2px;
+}
+
+.box.one .body .right .first {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.box.second {
+  margin-top: 5px;
+}
+
+.box.second .body {
+ height: 31px;
+}
+
+.box.second .body .middle {
+  position: relative;
+}
+
+.box.second .body .middle .first {
+  margin-top: 10px;
+}
+
+.box.third {
+  margin-top: 2px;
+}
+
+.box.third .body {
+ height: 58px;
+}
+
+.box.third .body .middle .first {
+  margin-top: 6px;
+  margin-bottom: 2px;
+}
+
+.box.fourth {
+  margin-top: 2px;
+}
+
+.box.fourth .body {
+ height: 121px;
+}
+
+.box.fourth .body .left .label.first {
+  margin-top: 27px;
+}
+
+.box.fourth .body .left .label.second {
+  margin-top: 10px;
+}
+
+.box.fourth .body .middle div.first {
+  margin-top: 5px;
+  margin-bottom: 3px;
+}
+
+.box.fourth .right {
+  margin-top: 19px;
+}
+
+.box.fifth {
+  margin-top: 2px;
+}
+
+.box.fifth .body {
+ height: 74px;
+}
+
+.box.fifth .body .left .label.first {
+  margin-top: 10px;
+}
+
+.box.fifth .body .left .label.second {
+  margin-top: 25px;
+}
+
+.box.fifth .body .middle {
+  position: relative;
+}
+
+.box.fifth .body .middle .first {
+  margin-top: 10px;
+}
+
+.box.fifth .body .middle div.second {
+  margin-top: 4px;
+  margin-bottom: 3px;
+}
+
+.box.fifth .right {
+  padding-top: 45px;
+}
+
+.box.sixth {
+  margin-top: 5px;
+  border-top: 4px solid rgb(234,93,45);
+}
+
+.box.sixth .body {
+ height: 94px;
+}
+
+  .box.sixth .body .left {
+    flex-grow: 1;
+    position: relative;
+  }
+
+  .box.sixth .body .left span{
+    vertical-align: middle;
+    padding-left: 9px;
+  }
+
+  .box.sixth .body .right {
+    flex-grow: 1;
+    flex-basis: 80px;
+    position: relative;
+  }
+
+.box.sixth .body .right img.background{
+  vertical-align: middle;
+  margin-left: 89px;
+}
+
+.box.sixth .body .right span{
+  vertical-align: middle;
+  padding-left: 9px;
+}
+
+  .box.sixth .body .right .grip.first{
+    position: absolute;
+    top: 40px;
+    left: 92px;
+  }
+
+  .box.sixth .body .right .grip.second{
+    position: absolute;
+    top: 68px;
+    left: 92px;
+  }
+
+  div.six {
+    margin-top: 10px;
+  }
+
+.header {
+   background-color: rgb(195,206,213);
+   font-weight: 600;
+   font-size: 12px;
+   height: 22px;
+   position: relative;
+   padding-left: 11px;
+}
+
+.box .header .dot {
+   width: 9px;
+   height: 10px;
+   position: absolute;
+   top: 50%;
+   transform: translate(0, -50%)
+}
+
+ .box .header span {
+   margin: 0;
+   margin-left: 16px;
+   position: absolute;
+   top: 50%;
+   transform: translate(0, -50%)
+ }
+
+.box .header .help {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  position: absolute;
+  right: 39px;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.box .header .info {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translate(0, -50%)
+}
+
+.box .body {
+  color: black;
+  background-color: rgb(240, 245, 248);
+  font-size: 11px;
+  display: flex;
+  padding-left: 11px;
+  padding-right: 15px;
+}
+
+.box .body .help {
+  width: 16px;
+  height: 16px;
+  float: right;
+  margin-left: 8px;
+  margin-top: 6px;
+}
+
+.box .body .info {
+  width: 16px;
+  height: 16px;
+  float: right;
+  margin-top: 6px;
+}
+
+.box .body img.rotamass {
+  width: 53px;
+  height: 53px;
+}
+
+.box .body .left{
+  flex-grow: 1;
+  flex-basis: 65px;
+}
+
+.box .body .left .label.first{
+   margin-top: 8px;
+}
+
+.box .body .left .label.second{
+   margin-top: 12px;
+}
+
+.box .body .left .label.third{
+   margin-top: 20px;
+}
+
+.box .body .left .label.fourth{
+   margin-top: 2px;
+}
+
+.box .body .left .label.fifth{
+   margin-top: 20px;
+}
+
+.box .body .middle{
+  flex-grow: 2;
+  flex-basis: 90px;
+}
+
+.box .body .middle .label{
+   color: rgb(105,114,119);
+   font-size: 10px;
+}
+
+.box .body .middle .label.first{
+   margin-left: 13px;
+}
+
+.box .body .middle .label.second{
+   margin-left: 10px;
+}
+
+.box .body .middle .label.third{
+   margin-left: 9px;
+}
+
+.box .body .right{
+  flex-grow: 2;
+  flex-basis: 0;
+}
+
+.box .body .right .checkbox{
+   margin-top: 12px;
+}
+
+.box .body .right .select{
+   margin-top: 10px;
+}
+
+input.text {
+  height: 20px;
+  text-align:right;
+  border: 1px solid rgb(204,204,204);
+  padding: 0;
+  margin: 0;
+  margin-right: -2px;
+  margin-bottom: 2px;
+}
+
+input.text.disabled {
+  opacity: 0.5;
+}
+
+input.text.big {
+  width: 185px;
+}
+
+input.text.middle {
+  width: 92px;
+  margin-left: 1px;
+}
+
+input.text.small {
+  width: 59px;
+}
+
+select {
+  height: 22px;
+  font-size: 11px;
+  padding-left: 5px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+select.light {
+  border: 1px solid rgb(195,206,213);
+  border-radius: 0;
+}
+
+.styled-select.light.small {
+  width: 92px;
+  background: url(images/DropDownSmall.png) no-repeat right #ddd;
+  vertical-align: top;
+}
+
+.styled-select.light.big {
+  width: 281px;
+  background: url(images/DropDownBig.png) no-repeat right #ddd;
+}
+
+.styled-select.light.disabled {
+  opacity: 0.5;
+}
+
+.styled-select.light.small.tupl {
+  margin-left: 1px;
+}
+
+.styled-select.dark {
+  height: 18px;
+  width: 123px;
+  border-radius: 2px;
+  color: white;
+  background:  url(images/DropDownDark.png) no-repeat right rgb(63,72,79);
+  vertical-align: middle;
+  border: 2px solid rgb(63, 72, 79);
+}
+
+
+.footer {
+  height: 36px;
+  padding-left: 11px;
+  padding-right: 15px;
+  margin-top: 5px;
+  font-size: 10px;
+  border-top: 1px solid rgb(234,93,45);
+  border-bottom: 1px solid rgb(234,93,45);
+  background-color: white;
+  position: relative
+}
+
+  .footer img {
+    margin-top: 5px;
+    width: 26px;
+    height: 26px;
+  }
+
+  .footer input {
+    margin-top: 5px;
+    width: 26px;
+    height: 26px;
+  }
+
+  .footer img.generate {
+    opacity: 0.7;
+    float: right;
+    margin-right: 73px;
+    filter: grayscale(100%);
+  }
+
+  .footer img.reset {
+    opacity: 0.7;
+    float: right;
+    margin-right: 24px;
+    filter: grayscale(100%);
+  }
+
+  .footer span {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%)
+  }
+
+  .footer span.calc {
+    left: 43px;
+  }
+
+  .footer span.generate {
+    color: rgb(128,128,128);
+    line-height: 12px;
+    width: 70px;
+    right: 63px;
+  }
+
+  .footer span.reset {
+    color: rgb(128,128,128);
+    right: 6px;
+  }
+
+
+.regular-checkbox + label { }
+
+label {
+	display: inline;
+}
+
+.regular-checkbox {
+	display: none;
+}
+
+.regular-checkbox + label {
+	background-color: white;
+	border: 1px solid rgb(195,206,213);
+	padding: 6px;
+	border-radius: 0;
+	display: inline-block;
+	position: relative;
+  margin-top: -2px;
+}
+
+.regular-checkbox:checked + label {
+	background-color: white;
+	border: 1px solid rgb(195,206,213);
+	color: rgb(195,206,213);
+}
+
+.regular-checkbox:checked + label:after {
+	content: '\2714';
+	font-size: 14px;
+	position: absolute;
+	top: -3px;
+	left: 0px;
+	color: rgb(74,80,85);
+}
+
+
+.checkbox-tag {
+	font-family: Verdana;
+	width: 200px;
+	position: relative;
+	top: 11px;
+	display: block;
+	float: left;
+  left: 20px
+}
+
+
+/* RADIO */
+
+.regular-radio {
+	display: none;
+}
+
+.regular-radio + label {
+	-webkit-appearance: none;
+	background-color: white;
+	border: 1px solid rgb(195,206,213);
+	padding: 6px;
+	border-radius: 50px;
+	display: inline-block;
+	position: relative;
+}
+
+.regular-radio:checked + label:after {
+	content: ' ';
+	width: 8px;
+	height: 8px;
+	border-radius: 50px;
+	position: absolute;
+	top: 2px;
+	background: rgb(74,80,85);
+	left: 2.5px;
+}
+
+.regular-radio:checked + label {
+	background-color: white;
+}
+
+.regular-radio + label:active, .regular-radio:checked + label:active {
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.radio-tag {
+	font-family: Verdana;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%)
+}
+
+.box.fifth .radio-tag {
+	font-family: Verdana;
+  position: absolute;
+  top: 17px;
+}
+
+label.gas {
+  margin-left: 45px;
+}
+
+.radio-tag.gas {
+  left: 82px;
+}
+
+label.mass {
+  margin-left: 75px;
+}
+
+.radio-tag.mass {
+  left: 112px;
+}

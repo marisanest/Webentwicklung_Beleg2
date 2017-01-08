@@ -1,0 +1,40 @@
+[
+  {"id":1,
+  "name":"Coriolis mass flowmeter (RotaMass)",
+  "device": [
+              {"name":"Rotamass 3",
+              "image":"Rotamass3.svg"
+              }
+            ]
+  },
+  {"id":2,
+  "name":"Variable Area Flowmeter (Rotameter)",
+  "device": [
+              {"name":"Metal VA meters (All)",
+              "image":"RamcRakd.svg"
+              },
+              {"name":"Glass-/Plastic VA meters (All)",
+              "image":"RagnRaqn.svg"
+              }
+            ]
+  },
+  {"id":3,
+  "name":"Vortex flowmeter",
+  "device": [
+              {"name":"digitalYEWFLO (DY)",
+              "image":"YewFloDy.svg"
+              }
+            ]
+  },
+  {"id":4,
+  "name":"Magmeter",
+  "device": [
+              {"name":"RX",
+              "image":"YewFloDy.svg"
+              },
+              {"name":"RY",
+              "image":"YewFloDy.svg"
+              }
+            ]
+  }
+]
