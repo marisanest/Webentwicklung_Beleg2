@@ -3,17 +3,18 @@ socket.on("connect", () => {
     console.log("Successfully connected to socket.io server.");
 })
 
-socket.on("technologyRequested", data => {
-    console.log("Technology received:");
-    console.log(data);
-    renderTechnology(data)
+socket.on("technologiesRequested", data => {
+    cacheTechnologies = data;
+    renderTechnologies();
 });
 
-socket.on("fluidRequested", data => {
-    console.log("Fluid received:");
-    console.log(data);
-    renderProcessData(data)
+socket.on("fluidsRequested", data => {
+    cacheFluids = data;
+    renderProcessData();
 });
+
+getTechnologies();
+getFluidsByType("liquid");
 
 loadFromLocalStorage();
 /*
@@ -58,165 +59,236 @@ function loadFromLocalStorage() {
 }
 
 /*
-Functions fills Box1 productline select
+Functions fills Box1 technology select
 */
-function renderTechnology(data) {
+function renderTechnologies(){
 
-    var div = document.getElementsByClassName("productlineChoice")[0]
-    var select = document.createElement("select")
+  data = cacheTechnologies;
 
-    if (div.hasChildNodes()) {
-        div.removeChild(div.childNodes[0]);
-    }
+  var div = document.getElementsByClassName("technology")[0];
+  var select = document.createElement("select");
+  select.className = "styled-select light big first technology-select";
+  div.appendChild(select);
 
-    div.appendChild(select)
+  var option = document.createElement("option");
+  option.innerText = "Please select one technology!"
+  option.value = 0;
+  select.appendChild(option);
 
-    if (data.device.length === 1) {
-        select.className = "styled-select light big productline disabled"
-    } else {
-        select.className = "styled-select light big productline"
-    }
-
-    select.id = "productlineChoice"
-    select.name = "productline"
-    select.form = "calculateform"
-
-
-    for (var i = 0; i < data.device.length; i++) {
-        var option = document.createElement("option")
-        option.innerText = data.device[i].name
-        option.value = data.device[i].image
-        option.id = i
-        select.appendChild(option)
-    }
-    renderProductline(data.device[0].image)
+  for(var i = 0; i < data.length; i++) {
+    var option = document.createElement("option");
+    option.innerText = data[i].name;
+    option.value = data[i].id;
+    select.appendChild(option);
+  }
 }
 
 /*
-function adds image in box 1 depending on technology choice
+function adds image in box 1 depending on technology choice which is given by the id
 */
-function renderProductline(data) {
+function renderProductlines(id) {
 
-    var div = document.getElementsByClassName("device")[0]
-    var img = document.createElement("img")
+  var id = parseInt(id);
 
-    if (div.hasChildNodes()) {
-        div.removeChild(div.childNodes[0]);
-    }
-
-    div.appendChild(img)
-
-    img.className = "rotamass first"
-    img.src = data
+  if(id === 0) {
+    removeProductlineUI();
+  } else if (!id || isNaN(id)) {
+    return;
+  } else {
+    var data = cacheTechnologies.find(i => i.id === id);
+    renderProductlineLabel()
+    renderProductlineSelect(data)
+    renderProductlineImage(data.device[0].image);
+  }
 }
+
+function removeProductlineUI() {
+  var divLabel = document.getElementsByClassName("flowmetertypes-left")[0];
+
+  if (divLabel.children[1]) {
+    divLabel.children[1].remove();
+  }
+
+  var divSelect = document.getElementsByClassName("productline")[0];
+
+  if (divSelect.children[0]) {
+    divSelect.children[0].remove();
+  }
+
+  var divImage = document.getElementsByClassName("productline-image")[0];
+
+  if (divImage.children[0]) {
+    divImage.children[0].remove();
+  }
+}
+
+function renderProductlineLabel() {
+  var div = document.getElementsByClassName("flowmetertypes-left")[0];
+
+  if (div.children[1]) {
+    div.children[1].remove();
+  }
+
+  var divNew = document.createElement("div");
+  divNew.className = "label second"
+  divNew.innerText = "Product line:"
+
+  div.appendChild(divNew);
+}
+
+function renderProductlineSelect(data) {
+
+  var div = document.getElementsByClassName("productline")[0];
+
+  if (div.children[0]) {
+    div.children[0].remove();
+  }
+
+  var select = document.createElement("select");
+
+  if (data.device.length === 1) {
+    select.className = "styled-select light big productline-select disabled";
+  } else {
+    select.className = "styled-select light big productline-select";
+  }
+
+  select.name = "productline";
+  select.form = "calculateform";
+
+  div.appendChild(select);
+
+  for(var i = 0; i < data.device.length; i++) {
+    var option = document.createElement("option");
+    option.innerText = data.device[i].name;
+    option.value = data.device[i].image;
+    select.appendChild(option);
+  }
+}
+
+function renderProductlineImage(path) {
+
+  var div = document.getElementsByClassName("productline-image")[0];
+
+  if (div.children[0]) {
+    div.children[0].remove();
+  }
+
+  var img = document.createElement("img");
+  img.className = "rotamass first";
+  img.src = path;
+
+  div.appendChild(img);
+}
+
 /*
 function renders all remaining select fields
 */
-function renderProcessData(data) {
-    renderFluidName(data)
-    renderFluiFormula(data)
-    renderOperatingTemperature(data)
-    renderOperatingPressure(data)
-    renderDynamicViscosity(data)
-    renderOperatingDensity(data)
+function renderProcessData() {
+    var data = cacheFluids;
+    renderFluidName(data);
+    renderFluiFormula(data);
+    renderOperatingTemperature(data);
+    renderOperatingPressure(data);
+    renderDynamicViscosity(data);
+    renderOperatingDensity(data);
 }
 
 function renderFluidName(data) {
 
-    var div = document.getElementsByClassName("fluid-name")[0]
-    var select = document.createElement("select")
+  var div = document.getElementsByClassName("fluid-name")[0];
 
-    if (div.hasChildNodes()) {
-        div.removeChild(div.childNodes[0]);
-    }
+  if (div.children[0]) {
+    div.children[0].remove();
+  }
 
-    div.appendChild(select)
+  var select = document.createElement("select");
+  select.className = "styled-select light big first fluid-name-select";
+  select.name = "fluid";
+  select.form = "calculateform";
+  div.appendChild(select);
 
-    select.className = "styled-select light big first"
-    select.name = "fluid"
-    select.form = "calculateform"
-
-    for (var i = 0; i < data.length; i++) {
-        var option = document.createElement("option")
-        option.innerText = data[i].name
-        option.value = data[i].id
-        select.appendChild(option)
-    }
+  for(var i = 0; i < data.length; i++) {
+    var option = document.createElement("option");
+    option.innerText = data[i].name;
+    option.value = data[i].id;
+    select.appendChild(option);
+  }
 }
 
 function renderFluiFormula(data) {
 
-    var div = document.getElementsByClassName("fluid-formula")[0]
-    var select = document.createElement("select")
+  var div = document.getElementsByClassName("fluid-formula")[0];
 
-    if (div.hasChildNodes()) {
-        div.removeChild(div.childNodes[0]);
-    }
+  if (div.children[0]) {
+    div.children[0].remove();
+  }
 
-    div.appendChild(select)
+  var select = document.createElement("select");
+  select.className = "styled-select light big fluid-formula-select";
+  select.name = "formula";
+  select.form = "calculateform";
 
-    select.className = "styled-select light big"
-    select.name = "formula"
-    select.form = "calculateform"
+  div.appendChild(select);
 
-
-    for (var i = 0; i < data.length; i++) {
-        var option = document.createElement("option")
-        option.innerText = data[i].formula
-        option.value = data[i].id
-        select.appendChild(option)
-    }
+  for(var i = 0; i < data.length; i++) {
+    var option = document.createElement("option");
+    option.innerText = data[i].formula;
+    option.value = data[i].id;
+    select.appendChild(option);
+  }
 }
 
 function renderOperatingTemperature(data) {
-    var input = document.getElementsByClassName("operating-temperature")[0]
-    input.value = data[0].operatingTemperature
+  var input = document.getElementsByClassName("operating-temperature")[0];
+  input.value = data[0].operatingTemperature;
 }
 
 function renderOperatingPressure(data) {
-    var input = document.getElementsByClassName("operating-pressure")[0]
-    input.value = data[0].operatingPressure
+  var input = document.getElementsByClassName("operating-pressure")[0];
+  input.value = data[0].operatingPressure;
 }
 
 function renderDynamicViscosity(data) {
-    var input = document.getElementsByClassName("dynamic-viscosity")[0]
-    input.value = data[0].dynamicViscosity
+  var input = document.getElementsByClassName("dynamic-viscosity")[0];
+  input.value = data[0].dynamicViscosity;
 }
 
 function renderOperatingDensity(data) {
-    var input = document.getElementsByClassName("operating-density")[0]
-    input.value = data[0].operatingDensity
+  var input = document.getElementsByClassName("operating-density")[0];
+  input.value = data[0].operatingDensity;
 }
 
-function getTechnology(id) {
-    var request = new XMLHttpRequest();
-    request.open("GET", "/api/technologies?id=" + id);
-    request.addEventListener('load', function(event) {
-        if (request.status == 200) {
-            console.info(request.responseText);
-        } else {
-            console.error(request.statusText, request.responseText);
-        }
-    });
-    request.send();
+function getFluidsByType(fluidType){
+	var request = new XMLHttpRequest();
+   request.open("GET","/api/fluids?fluidType=" + fluidType);
+   request.addEventListener('load', function(event) {
+      if (request.status == 200) {
+         console.info(request.responseText);
+      } else {
+         console.error(request.statusText, request.responseText);
+      }
+   });
+   request.send();
 }
 
-function getFluidsByType(fluidType) {
-    var request = new XMLHttpRequest();
-    request.open("GET", "/api/fluids?fluidType=" + fluidType);
-    request.addEventListener('load', function(event) {
-        if (request.status == 200) {
-            console.info(request.responseText);
-        } else {
-            console.error(request.statusText, request.responseText);
-        }
-    });
-    request.send();
+function getTechnologies() {
+  var request = new XMLHttpRequest();
+   request.open("GET","/api/technologies");
+   request.addEventListener('load', function(event) {
+      if (request.status == 200) {
+         console.info(request.responseText);
+      } else {
+         console.error(request.statusText, request.responseText);
+      }
+   });
+   request.send();
 }
 
 function verifyAll() {
+
     var valid = true;
-    var customFluid = document.getElementById("checkbox-1-1").checked
+    var customFluid = document.getElementById("checkbox-1-1").checked;
+
     validTemp = verifyTemp(customFluid);
     validPressure = verifyPressure(customFluid);
     if (customFluid) {
@@ -250,6 +322,7 @@ function verifyTemp(customFluid) {
         var temp = tempEl.value;
         //Todo: Denken Sie sich notwendige, nicht-fachliche Validierungen aus und implementieren Sie diese!
         //Mehr als isNaN()??
+        // Nein ich denke ist so genug, aber werde ihn morgen noch mal fragen
         if (temp > maxTemp || temp < minTemp || isNaN(temp)) {
             tempEl.setAttribute("validationError", "true");
             tempEl.setAttribute("class", "text small red")
@@ -395,7 +468,11 @@ function adjustLayoutOfBoxThirdMiddle(checkBox) {
             }
         }
     } else {
-        //  addChildrenToFluidDivs();
+        if(localStorage.getItem("radio-liquid") === "true") {
+          getFluidsByType("liquid")
+        } else {
+          getFluidsByType("gas")
+        }
     }
 }
 
@@ -420,21 +497,100 @@ function adjustLayoutOfViscosityAndDensity(checkBox) {
     }
 }
 
-$("body").on("change", ".technology", e => {
-    getTechnology($(".technology").val());
+function updateProcessData(id) {
+
+  var id = parseInt(id);
+
+  if (!id || isNaN(id)) {
+    return;
+  }
+
+  updateFluidName(id);
+  updateFluidFormula(id);
+  updateTemperature(id);
+  updatePressure(id);
+  updateViscosity(id);
+  updateDensity(id)
+}
+
+function updateFluidName(id) {
+  var div = document.getElementsByClassName("fluid-name-select")[0];
+  var children = div.children
+
+  for(var i = 0; i < children.length; i++) {
+    if (children[i].value === id.toString()) {
+      children[i].setAttribute("selected", "selected");
+    }
+  }
+}
+
+function updateFluidFormula(id) {
+
+  var div = document.getElementsByClassName("fluid-formula-select")[0];
+  var children = div.children
+
+  for(var i = 0; i < children.length; i++) {
+    if (children[i].value === id.toString()) {
+      children[i].setAttribute("selected", "selected");
+    }
+  }
+}
+
+function updateTemperature(id) {
+
+  var data = cacheFluids.find(i => i.id === id);
+
+  var input = document.getElementsByClassName("operating-temperature")[0];
+  input.value = data.operatingTemperature
+}
+
+function updatePressure(id) {
+
+  var data = cacheFluids.find(i => i.id === id);
+
+  var input = document.getElementsByClassName("operating-pressure")[0];
+  input.value = data.operatingPressure
+}
+
+function updateViscosity(id) {
+
+  var data = cacheFluids.find(i => i.id === id);
+
+  var input = document.getElementsByClassName("dynamic-viscosity")[0];
+  input.value = data.dynamicViscosity
+}
+
+function updateDensity(id) {
+
+  var data = cacheFluids.find(i => i.id === id);
+
+  var input = document.getElementsByClassName("operating-density")[0];
+  input.value = data.operatingDensity
+}
+
+
+$("body").on("change", ".technology-select", e => {
+  renderProductlines($( ".technology-select" ).val());
 });
 
-$("body").on("change", ".productline.styled-select.light.big", e => {
-    renderProductline($(".productline.styled-select.light.big").val());
+$("body").on("change", ".productline-select", e => {
+  renderProductlineImage($( ".productline-select" ).val());
 });
 
-$("body").on("change", ".regular-radio.first.fluid", e => {
-    getFluidsByType($(".regular-radio.first.fluid").val());
+$("body").on("click", ".fluid-input", e => {
+  getFluidsByType(e.target.getAttribute("value"));
+});
+
+$("body").on("change", ".fluid-formula-select", e => {
+  updateProcessData($( ".fluid-formula-select" ).val());
+});
+
+$("body").on("change", ".fluid-name-select", e => {
+  updateProcessData($( ".fluid-name-select" ).val());
 });
 
 $("#calculateform").submit(e => {
     e.preventDefault();
-
     console.log(e.target);
     verifyAll();
     /*  addItem(title);*/

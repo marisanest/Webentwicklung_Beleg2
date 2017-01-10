@@ -92,32 +92,26 @@ app.get('/images/CheckBox.png', (req, res) => {
 
 app.get('/api/technologies', (req, res) => {
 
-  var id = parseInt(req.query.id);
-
-  if (!id || isNaN(id)) {
-      res.status(400).send("No or invalid id");
-      return;
-  }
-
-  var data = dataStorage.getTechnologyById(id);
+  var data = dataStorage.getTechnologies();
   res.status(200).send();
 
-  io.emit("technologyRequested", data);
+  io.emit("technologiesRequested", data);
 });
 
 app.get('/api/fluids', (req, res) => {
 
+  console.log("GET /api/fluids" )
   var fluidType = req.query.fluidType;
-  
+
   if (fluidType != "liquid" && fluidType != "gas") {
       res.status(400).send("No or invalid fluidType");
       return;
   }
 
-  var data = dataStorage.getFluidByType(fluidType);
+  var data = dataStorage.getFluidsByType(fluidType);
   res.status(200).send();
-
-  io.emit("fluidRequested", data);
+  console.log("DATA ==" + data )
+  io.emit("fluidsRequested", data);
 });
 
 server.listen(port);

@@ -15,7 +15,8 @@ body .content {
 }
 
 .box.one .body {
-    height: 56px;
+    /*height: 56px;*/
+    padding-bottom: 5px;
 }
 
 .box.one .body .middle .first {
