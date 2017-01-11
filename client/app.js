@@ -14,14 +14,196 @@ socket.on("fluidsRequested", data => {
 });
 
 getTechnologies();
-getFluidsByType("liquid");
+if (localStorage.getItem("radio-liquid")) {
+    if (localStorage.getItem("radio-liquid") === "true") {
+        getFluidsByType("liquid")
+    } else {
+        getFluidsByType("gas")
+    }
+} else {
+    getFluidsByType("liquid");
+}
 
-loadFromLocalStorage();
+
+/*
+Functions fills Box1 technology select
+*/
+function renderTechnologies() {
+
+    data = cacheTechnologies;
+
+    var div = document.getElementsByClassName("technology")[0];
+    var select = document.createElement("select");
+    select.setAttribute("id", "technologyChoice")
+    select.className = "styled-select light big first technology-select";
+    div.appendChild(select);
+
+    var option = document.createElement("option");
+    option.innerText = "Please select one technology!"
+    option.value = 0;
+    select.appendChild(option);
+
+    for (var i = 0; i < data.length; i++) {
+        var option = document.createElement("option");
+        option.innerText = data[i].name;
+        option.value = data[i].id;
+        select.appendChild(option);
+    }
+    loadTechnologyChoice();
+}
+
+
+function loadTechnologyChoice() {
+    if (localStorage.hasOwnProperty("technologyChoice")) {
+        var value = localStorage.getItem("technologyChoice");
+        var parent = document.getElementById("technologyChoice")
+        children = parent.children
+        for (var j = 0; j < children.length; j++) {
+            if (children[j].value === value) {
+                children[j].setAttribute("selected", "true");
+                renderProductlines(children[j].value);
+            }
+        }
+    }
+}
+/*
+function adds image in box 1 depending on technology choice which is given by the id
+*/
+function renderProductlines(id) {
+
+    var id = parseInt(id);
+
+    if (id === 0) {
+        removeProductlineUI();
+    } else if (!id || isNaN(id)) {
+        return;
+    } else {
+        var data = cacheTechnologies.find(i => i.id === id);
+        renderProductlineLabel()
+        renderProductlineSelect(data)
+        renderProductlineImage(data.device[0].image);
+    }
+}
+
+function removeProductlineUI() {
+    var divLabel = document.getElementsByClassName("flowmetertypes-left")[0];
+
+    if (divLabel.children[1]) {
+        divLabel.children[1].remove();
+    }
+
+    var divSelect = document.getElementsByClassName("productline")[0];
+
+    if (divSelect.children[0]) {
+        divSelect.children[0].remove();
+    }
+
+    var divImage = document.getElementsByClassName("productline-image")[0];
+
+    if (divImage.children[0]) {
+        divImage.children[0].remove();
+    }
+}
+
+function renderProductlineLabel() {
+    var div = document.getElementsByClassName("flowmetertypes-left")[0];
+
+    if (div.children[1]) {
+        div.children[1].remove();
+    }
+
+    var divNew = document.createElement("div");
+    divNew.className = "label second"
+    divNew.innerText = "Product line:"
+
+    div.appendChild(divNew);
+}
+
+function renderProductlineSelect(data) {
+
+    var div = document.getElementsByClassName("productline")[0];
+
+    if (div.children[0]) {
+        div.children[0].remove();
+    }
+
+    var select = document.createElement("select");
+    select.id = "productlineChoice"
+
+    if (data.device.length === 1) {
+        select.className = "styled-select light big productline-select disabled";
+    } else {
+        select.className = "styled-select light big productline-select";
+    }
+
+    select.name = "productline";
+    select.form = "calculateform";
+
+    div.appendChild(select);
+
+    for (var i = 0; i < data.device.length; i++) {
+        var option = document.createElement("option");
+        option.innerText = data.device[i].name;
+        option.value = data.device[i].image;
+        select.appendChild(option);
+    }
+    loadProductlineChoice();
+}
+
+function loadProductlineChoice() {
+    if (localStorage.hasOwnProperty("productlineChoice")) {
+        var value = localStorage.getItem("productlineChoice");
+        var parent = document.getElementById("productlineChoice")
+        children = parent.children
+        for (var j = 0; j < children.length; j++) {
+            if (children[j].value === value) {
+                children[j].setAttribute("selected", "true");
+                renderProductlineImage(value);
+            }
+        }
+    }
+}
+
+function renderProductlineImage(path) {
+
+    var div = document.getElementsByClassName("productline-image")[0];
+
+    if (div.children[0]) {
+        div.children[0].remove();
+    }
+
+    var img = document.createElement("img");
+    img.className = "rotamass first";
+    img.src = path;
+
+    div.appendChild(img);
+}
+
+/*
+function renders all remaining select fields
+*/
+function renderProcessData() {
+    var data = cacheFluids;
+    renderFluidName(data);
+    renderFluidFormula(data);
+    renderOperatingTemperature(data);
+    renderOperatingPressure(data);
+    renderDynamicViscosity(data);
+    renderOperatingDensity(data);
+    loadFromLocalStorage();
+}
+
+
 /*
 Function loads values from local Storage
 */
 function loadFromLocalStorage() {
-    //check how to deal with select.. and if all input are necessary
+    loadRadioButtons()
+    loadFluidCheckBox()
+    loadTextInputs()
+}
+
+function loadRadioButtons() {
     var checkButtons = ["radio-liquid", "radio-gas", "radio-volume", "radio-mass"]
     for (var i = 0; i < checkButtons.length; i++) {
         if (localStorage.hasOwnProperty(checkButtons[i])) {
@@ -29,26 +211,20 @@ function loadFromLocalStorage() {
             document.getElementById(checkButtons[i]).setAttribute("checked", value);
         }
     }
+}
 
-    var selectIds = ["technologyChoice", "procutlineChoice"]
-    for (var i = 0; i < selectIds.length; i++) {
-        if (localStorage.hasOwnProperty(selectIds[i])) {
-            var value = localStorage.getItem(selectIds[i]);
-            console.log("loadFromLocalStorage: key: " + selectIds[i] + " content: " + value);
-            var parent = document.getElementById(selectIds[i])
-            children = parent.children
-            console.log("children " + children);
-            for (var i = 0; i < children.length; i++) {
-                if (children[i].id === value) {
-                    children[i].setAttribute("selected", "true")
-                }
-            }
-        }
+function loadFluidCheckBox() {
+    if (localStorage.hasOwnProperty("checkbox-1-1")) {
+        var value = localStorage.getItem("checkbox-1-1");
+        console.log("loadFluidCheckBox value: " + value);
+        var checkBox = document.getElementById("checkbox-1-1")
+        checkBox.checked = value;
+        adjustLayout(checkBox);
     }
-    localStorage.setItem("oldViscosity", "1");
-    localStorage.setItem("oldDensity", "2")
+}
 
-    var inputIds = ["checkbox-1-1", "tempMin", "tempOp", "tempMax", "pressMin", "pressOp", "pressMax", "viscosity", "density", "frMin", "frOp", "frMax", "frDes"]
+function loadTextInputs() {
+    var inputIds = ["tempMin", "tempMax", "pressMin", "pressMax", "frMin", "frOp", "frMax", "frDes"]
     for (var i = 0; i < inputIds.length; i++) {
         if (localStorage.hasOwnProperty(inputIds[i])) {
             var value = localStorage.getItem(inputIds[i]);
@@ -58,232 +234,247 @@ function loadFromLocalStorage() {
     }
 }
 
-/*
-Functions fills Box1 technology select
-*/
-function renderTechnologies(){
-
-  data = cacheTechnologies;
-
-  var div = document.getElementsByClassName("technology")[0];
-  var select = document.createElement("select");
-  select.className = "styled-select light big first technology-select";
-  div.appendChild(select);
-
-  var option = document.createElement("option");
-  option.innerText = "Please select one technology!"
-  option.value = 0;
-  select.appendChild(option);
-
-  for(var i = 0; i < data.length; i++) {
-    var option = document.createElement("option");
-    option.innerText = data[i].name;
-    option.value = data[i].id;
-    select.appendChild(option);
-  }
-}
-
-/*
-function adds image in box 1 depending on technology choice which is given by the id
-*/
-function renderProductlines(id) {
-
-  var id = parseInt(id);
-
-  if(id === 0) {
-    removeProductlineUI();
-  } else if (!id || isNaN(id)) {
-    return;
-  } else {
-    var data = cacheTechnologies.find(i => i.id === id);
-    renderProductlineLabel()
-    renderProductlineSelect(data)
-    renderProductlineImage(data.device[0].image);
-  }
-}
-
-function removeProductlineUI() {
-  var divLabel = document.getElementsByClassName("flowmetertypes-left")[0];
-
-  if (divLabel.children[1]) {
-    divLabel.children[1].remove();
-  }
-
-  var divSelect = document.getElementsByClassName("productline")[0];
-
-  if (divSelect.children[0]) {
-    divSelect.children[0].remove();
-  }
-
-  var divImage = document.getElementsByClassName("productline-image")[0];
-
-  if (divImage.children[0]) {
-    divImage.children[0].remove();
-  }
-}
-
-function renderProductlineLabel() {
-  var div = document.getElementsByClassName("flowmetertypes-left")[0];
-
-  if (div.children[1]) {
-    div.children[1].remove();
-  }
-
-  var divNew = document.createElement("div");
-  divNew.className = "label second"
-  divNew.innerText = "Product line:"
-
-  div.appendChild(divNew);
-}
-
-function renderProductlineSelect(data) {
-
-  var div = document.getElementsByClassName("productline")[0];
-
-  if (div.children[0]) {
-    div.children[0].remove();
-  }
-
-  var select = document.createElement("select");
-
-  if (data.device.length === 1) {
-    select.className = "styled-select light big productline-select disabled";
-  } else {
-    select.className = "styled-select light big productline-select";
-  }
-
-  select.name = "productline";
-  select.form = "calculateform";
-
-  div.appendChild(select);
-
-  for(var i = 0; i < data.device.length; i++) {
-    var option = document.createElement("option");
-    option.innerText = data.device[i].name;
-    option.value = data.device[i].image;
-    select.appendChild(option);
-  }
-}
-
-function renderProductlineImage(path) {
-
-  var div = document.getElementsByClassName("productline-image")[0];
-
-  if (div.children[0]) {
-    div.children[0].remove();
-  }
-
-  var img = document.createElement("img");
-  img.className = "rotamass first";
-  img.src = path;
-
-  div.appendChild(img);
-}
-
-/*
-function renders all remaining select fields
-*/
-function renderProcessData() {
-    var data = cacheFluids;
-    renderFluidName(data);
-    renderFluiFormula(data);
-    renderOperatingTemperature(data);
-    renderOperatingPressure(data);
-    renderDynamicViscosity(data);
-    renderOperatingDensity(data);
-}
-
 function renderFluidName(data) {
 
-  var div = document.getElementsByClassName("fluid-name")[0];
+    var div = document.getElementsByClassName("fluid-name")[0];
 
-  if (div.children[0]) {
-    div.children[0].remove();
-  }
+    if (div.children[0]) {
+        div.children[0].remove();
+    }
 
-  var select = document.createElement("select");
-  select.className = "styled-select light big first fluid-name-select";
-  select.name = "fluid";
-  select.form = "calculateform";
-  div.appendChild(select);
+    var select = document.createElement("select");
+    select.className = "styled-select light big first fluid-name-select";
+    select.name = "fluid";
+    select.form = "calculateform";
+    select.id = "fluidChoice";
+    div.appendChild(select);
 
-  for(var i = 0; i < data.length; i++) {
-    var option = document.createElement("option");
-    option.innerText = data[i].name;
-    option.value = data[i].id;
-    select.appendChild(option);
-  }
+    for (var i = 0; i < data.length; i++) {
+        var option = document.createElement("option");
+        option.innerText = data[i].name;
+        option.value = data[i].id;
+        select.appendChild(option);
+    }
+    loadFluidChoice();
 }
 
-function renderFluiFormula(data) {
-
-  var div = document.getElementsByClassName("fluid-formula")[0];
-
-  if (div.children[0]) {
-    div.children[0].remove();
-  }
-
-  var select = document.createElement("select");
-  select.className = "styled-select light big fluid-formula-select";
-  select.name = "formula";
-  select.form = "calculateform";
-
-  div.appendChild(select);
-
-  for(var i = 0; i < data.length; i++) {
-    var option = document.createElement("option");
-    option.innerText = data[i].formula;
-    option.value = data[i].id;
-    select.appendChild(option);
-  }
+function loadFluidChoice() {
+    console.log("loadFluidChoice entered");
+    if (localStorage.hasOwnProperty("fluidChoice")) {
+        var value = localStorage.getItem("fluidChoice");
+        var parent = document.getElementById("fluidChoice")
+        children = parent.children
+        for (var j = 0; j < children.length; j++) {
+            if (children[j].value === value) {
+                children[j].setAttribute("selected", "true");
+                console.log("fluidChoice selected: " + value);
+            }
+        }
+    }
 }
+
+function renderFluidFormula(data) {
+
+    var div = document.getElementsByClassName("fluid-formula")[0];
+
+    if (div.children[0]) {
+        div.children[0].remove();
+    }
+
+    var select = document.createElement("select");
+    select.className = "styled-select light big fluid-formula-select";
+    select.name = "formula";
+    select.form = "calculateform";
+    select.id = "fluidFormulaChoice"
+
+    div.appendChild(select);
+
+    for (var i = 0; i < data.length; i++) {
+        var option = document.createElement("option");
+        option.innerText = data[i].formula;
+        option.value = data[i].id;
+        select.appendChild(option);
+    }
+    loadFluidFormulaChoice();
+}
+
+
+function loadFluidFormulaChoice() {
+    console.log("loadFluidFormulaChoice entered");
+    if (localStorage.hasOwnProperty("fluidFormulaChoice")) {
+        var value = localStorage.getItem("fluidFormulaChoice");
+        var parent = document.getElementById("fluidFormulaChoice")
+        children = parent.children
+        for (var j = 0; j < children.length; j++) {
+            if (children[j].value === value) {
+                children[j].setAttribute("selected", "true");
+                console.log("fluidFormulaChoice selected: " + value);
+            }
+        }
+    }
+}
+
 
 function renderOperatingTemperature(data) {
-  var input = document.getElementsByClassName("operating-temperature")[0];
-  input.value = data[0].operatingTemperature;
+    var input = document.getElementById("tempOp")
+    //var input = document.getElementsByClassName("operating-temperature")[0];
+    input.value = data[0].operatingTemperature;
+    loadInputValue(input);
 }
 
 function renderOperatingPressure(data) {
-  var input = document.getElementsByClassName("operating-pressure")[0];
-  input.value = data[0].operatingPressure;
+    var input = document.getElementById("pressOp")
+    //var input = document.getElementsByClassName("operating-pressure")[0];
+    input.value = data[0].operatingPressure;
+    loadInputValue(input);
 }
 
 function renderDynamicViscosity(data) {
-  var input = document.getElementsByClassName("dynamic-viscosity")[0];
-  input.value = data[0].dynamicViscosity;
+    var input = document.getElementById("viscosity")
+    //  var input = document.getElementsByClassName("dynamic-viscosity")[0];
+    input.value = data[0].dynamicViscosity;
+    loadInputValue(input);
 }
 
 function renderOperatingDensity(data) {
-  var input = document.getElementsByClassName("operating-density")[0];
-  input.value = data[0].operatingDensity;
+    var input = document.getElementById("density")
+    //    var input = document.getElementsByClassName("operating-density")[0];
+    input.value = data[0].operatingDensity;
+    loadInputValue(input);
 }
 
-function getFluidsByType(fluidType){
-	var request = new XMLHttpRequest();
-   request.open("GET","/api/fluids?fluidType=" + fluidType);
-   request.addEventListener('load', function(event) {
-      if (request.status == 200) {
-         console.info(request.responseText);
-      } else {
-         console.error(request.statusText, request.responseText);
-      }
-   });
-   request.send();
+function loadInputValue(input) {
+    if (localStorage.hasOwnProperty(input.id)) {
+        var value = localStorage.getItem(input.id);
+        console.log("loadInputValue from localStroag for ElementID: " + input.id + " Value: " + value);
+        input.value = value;
+    } else {
+        localStorage.setItem(input, input.value)
+    }
+}
+
+
+/*
+AJAX METHODS
+*/
+function getFluidsByType(fluidType) {
+    var request = new XMLHttpRequest();
+    request.open("GET", "/api/fluids?fluidType=" + fluidType);
+    request.addEventListener('load', function(event) {
+        if (request.status == 200) {
+            console.info(request.responseText);
+        } else {
+            console.error(request.statusText, request.responseText);
+        }
+    });
+    request.send();
 }
 
 function getTechnologies() {
-  var request = new XMLHttpRequest();
-   request.open("GET","/api/technologies");
-   request.addEventListener('load', function(event) {
-      if (request.status == 200) {
-         console.info(request.responseText);
-      } else {
-         console.error(request.statusText, request.responseText);
-      }
-   });
-   request.send();
+    var request = new XMLHttpRequest();
+    request.open("GET", "/api/technologies");
+    request.addEventListener('load', function(event) {
+        if (request.status == 200) {
+            console.info(request.responseText);
+        } else {
+            console.error(request.statusText, request.responseText);
+        }
+    });
+    request.send();
 }
 
+/*
+AJAX FUNCTIONS end
+*/
+
+
+/*
+ADJUST LAYOUT FUNCTIONS IF CUSTOM FLUID start
+*/
+
+function adjustLayout(checkBox) {
+    console.log("entered adjustLayout");
+    adjustLayoutOfViscosityAndDensity(checkBox);
+    adjustLayoutOfBoxThirdMiddle(checkBox);
+}
+
+function adjustLayoutOfBoxThirdMiddle(checkBox) {
+    var fluidName = document.getElementById("fluidName")
+    var fluidFormula = document.getElementById("fluidFormula")
+    console.log("even in adjustLayoutOfBoxThirdMiddle is checkbox value: " + checkBox.checked);
+    if (checkBox.checked) {
+        if (fluidName.hasChildNodes()) {
+            var children = fluidName.children;
+            for (var i = 0; i < children.length; i++) {
+                fluidName.removeChild(children[i])
+            }
+        }
+        var input = document.createElement("input")
+        input.id = "fluidInput"
+        input.type = "text"
+        input.class = "styled-select light big first"
+        if (localStorage.getItem("fluidInput")) {
+            input.value = localStorage.getItem("fluidInput")
+        } else {
+            input.value = ""
+        }
+        fluidName.appendChild(input)
+        //Todo: what class should that have?
+        //  fluidFormula.setAttribute("hidden", "true");
+        if (fluidFormula.hasChildNodes()) {
+            children = fluidFormula.children;
+            for (var i = 0; i < children.length; i++) {
+                fluidFormula.removeChild(children[i]);
+            }
+        }
+    } else {
+        var data = cacheFluids;
+        renderFluidName(data);
+        renderFluidFormula(data);
+        renderOperatingTemperature(data);
+        renderOperatingPressure(data);
+        renderDynamicViscosity(data);
+        renderOperatingDensity(data);
+    }
+}
+
+
+function adjustLayoutOfViscosityAndDensity(checkBox) {
+    var viscosity = document.getElementById("viscosity")
+    var density = document.getElementById("density")
+    if (checkBox.checked) {
+        localStorage.setItem("oldViscosity", viscosity.value)
+        viscosity.setAttribute("value", "")
+        viscosity.setAttribute("type", "text")
+        viscosity.removeAttribute("readonly")
+        viscosity.removeAttribute("class", "text big disabled dynamic-viscosity")
+        viscosity.setAttribute("class", "text big dynamic-viscosity")
+        localStorage.setItem("oldDensity", density.value)
+        density.setAttribute("value", "")
+        density.setAttribute("type", "text")
+        density.removeAttribute("readonly")
+        density.removeAttribute("class", "text big disabled operating-density")
+        density.setAttribute("class", "text big operating-density")
+    } else {
+        viscosity.setAttribute("readonly", "readonly")
+        viscosity.setAttribute("value", localStorage.getItem("oldViscosity"))
+        viscosity.removeAttribute("class", "text big  dynamic-viscosity")
+        viscosity.setAttribute("class", "text big disabled dynamic-viscosity")
+        density.setAttribute("readonly", "readonly")
+        density.setAttribute("value", localStorage.getItem("oldDensity"))
+        density.removeAttribute("class", "text big operating-density")
+        density.setAttribute("class", "text big disabled operating-density")
+    }
+}
+
+/*
+ADJUST LAYOUT FUNCTIONS IF CUSTOM FLUID end
+*/
+
+
+/*
+VERIFICATION FUNCTIONS start
+*/
 function verifyAll() {
 
     var valid = true;
@@ -298,7 +489,7 @@ function verifyAll() {
     if (validTemp && validPressure) {
         calculate();
     } else {
-        alert("You need to enter right values.")
+        alert("You need to enter correct values.")
     }
 }
 
@@ -306,9 +497,9 @@ function verifyAll() {
 function verifyTemp(customFluid) {
     var valid = true;
     var temperature = [
-        "tempMin",
+        //    "tempMin",
         "tempOp",
-        "tempMax"
+        //    "tempMax"
     ]
     if (customFluid) {
         var maxTemp = 350
@@ -338,15 +529,12 @@ function verifyTemp(customFluid) {
     return valid;
 }
 
-/*
-absolut Maximale Viskosität: 2 mPas Minimale Viskosität: 0,01 mPas Maximale Dichte: 200 kg/m3 Minimale Dichte: 0,01 kg/m3
-*/
 function verifyVisc() {
 
     var valid = true;
     var viscosityValue = document.getElementById("viscosity").value;
 
-    if (viscosityValue > 2 || viscosityValue < 0.01 || isNaN(temp)) {
+    if (viscosityValue > 2 || viscosityValue < 0.01 || isNaN(viscosityValue)) {
         viscosityValue.setAttribute("validationError", "true");
         viscosityValue.setAttribute("class", "text red")
         valid = false;
@@ -360,7 +548,7 @@ function verifyDens() {
     var valid = true;
     var densityValue = document.getElementById("density").value;
 
-    if (densityValue > 2 || densityValue < 0.01 || isNaN(temp)) {
+    if (densityValue > 2 || densityValue < 0.01 || isNaN(densityValue)) {
         densityValue.setAttribute("validationError", "true");
         densityValue.setAttribute("class", "text red")
         valid = false;
@@ -373,9 +561,9 @@ function verifyDens() {
 function verifyPressure(customFluid) {
     var valid = true;
     var pressure = [
-        "pressMin",
+        //    "pressMin",
         "pressOp",
-        "pressMax"
+        //      "pressMax"
     ]
     if (customFluid) {
         var maxPress = 200
@@ -403,11 +591,12 @@ function verifyPressure(customFluid) {
                 pressElement.setAttribute("class", "text small")
             }
         }
-        //ToDo: Die Validierung soll ausgeführt werden, wenn auf den „Calculate“-Button geklickt wird. Im Fehlerfall, soll zusätzlich zum roten Rahmen eine Meldung mit alert() ausgegeben werden, um den Benutzer mitzuteilen, dass alle Validierungsfehler behoben werden müssen, bevor die Berechnung ausgeführt werden kann.
-        //Attribut und Klasse zurücksetzen!
     }
     return valid;
 }
+/*
+VERIFICATION FUNCTIONS end
+*/
 
 function calculate() {
     //T1, p1, must be global, as well as oldViscosity and oldDensity
@@ -415,27 +604,23 @@ function calculate() {
     var p1 = localStorage.getItem("pressOpOld")
     var t2 = document.getElementById("tempOp").value;
     var p2 = document.getElementById("pressOp").value;
-    console.log("tempOpOld" + t1);
-    console.log("pressOpOld" + p1);
     calculateViscosity(t1, t2);
     calculateDensity(p1, p2, t1, t2);
 }
 
 function calculateViscosity(t1, t2) {
     var oldViscosity = localStorage.getItem("viscosity")
-    console.log("oldViscosity: " + oldViscosity);
     var newViscosity = oldViscosity * ((273.15 + t1) / (273.15 + t2))
     console.log("newViscosity: " + newViscosity);
-    document.getElementById("viscosity").setAttribute("value", newViscosity);
+    document.getElementById("viscosity").value = newViscosity;
     localStorage.setItem("viscosity", newViscosity)
 }
 
 function calculateDensity(p1, p2, t1, t2) {
     var oldDensity = localStorage.getItem("density")
-    console.log("oldDensity: " + oldDensity);
     var newDensity = oldDensity * ((273.15 + t1) / (273.15 + t2)) * (p2 / p1)
     console.log("newDensity: " + newDensity);
-    document.getElementById("density").setAttribute("value", newDensity);
+    document.getElementById("density").value = newDensity;
     localStorage.setItem("density", newDensity)
 }
 
@@ -444,149 +629,100 @@ function displayErrorMessage(element) {
     element.setalert("Temp is to high");
 }
 
-function adjustLayout(checkBox) {
-    adjustLayoutOfViscosityAndDensity(checkBox);
-    adjustLayoutOfBoxThirdMiddle(checkBox);
-}
 
-function adjustLayoutOfBoxThirdMiddle(checkBox) {
-    var fluidName = document.getElementById("fluidName")
-    console.log(fluidName);
-    var fluidFormula = document.getElementById("fluidFormula")
-    if (checkBox.checked) {
-        console.log("adjustLayoutOfBoxThirdMiddle and checkbox is checked");
-        if (fluidName.hasChildNodes()) {
-            var children = fluidName.children;
-            for (var i = 0; i < children.length; i++) {
-                fluidName.removeChild(children[i])
-            }
-        }
-        if (fluidFormula.hasChildNodes()) {
-            children = fluidFormula.children;
-            for (var i = 0; i < children.length; i++) {
-                fluidFormula.removeChild(children[i]);
-            }
-        }
-    } else {
-        if(localStorage.getItem("radio-liquid") === "true") {
-          getFluidsByType("liquid")
-        } else {
-          getFluidsByType("gas")
-        }
-    }
-}
-
-
-function adjustLayoutOfViscosityAndDensity(checkBox) {
-    var viscosity = document.getElementById("viscosity")
-    var density = document.getElementById("density")
-    if (checkBox.checked) {
-        localStorage.setItem("oldViscosity", viscosity.value)
-        viscosity.setAttribute("value", "")
-        viscosity.setAttribute("type", "text")
-        viscosity.removeAttribute("readonly")
-        localStorage.setItem("oldDensity", density.value)
-        density.setAttribute("value", "")
-        density.setAttribute("type", "text")
-        density.removeAttribute("readonly")
-    } else {
-        viscosity.setAttribute("readonly", "readonly")
-        viscosity.setAttribute("value", localStorage.getItem("oldViscosity"))
-        density.setAttribute("readonly", "readonly")
-        density.setAttribute("value", localStorage.getItem("oldDensity"))
-    }
-}
 
 function updateProcessData(id) {
 
-  var id = parseInt(id);
+    var id = parseInt(id);
 
-  if (!id || isNaN(id)) {
-    return;
-  }
+    if (!id || isNaN(id)) {
+        return;
+    }
 
-  updateFluidName(id);
-  updateFluidFormula(id);
-  updateTemperature(id);
-  updatePressure(id);
-  updateViscosity(id);
-  updateDensity(id)
+    updateFluidName(id);
+    updateFluidFormula(id);
+    updateTemperature(id);
+    updatePressure(id);
+    updateViscosity(id);
+    updateDensity(id)
 }
 
 function updateFluidName(id) {
-  var div = document.getElementsByClassName("fluid-name-select")[0];
-  var children = div.children
+    var div = document.getElementsByClassName("fluid-name-select")[0];
+    var children = div.children
 
-  for(var i = 0; i < children.length; i++) {
-    if (children[i].value === id.toString()) {
-      children[i].setAttribute("selected", "selected");
+    for (var i = 0; i < children.length; i++) {
+        if (children[i].value === id.toString()) {
+            children[i].setAttribute("selected", "selected");
+        }
     }
-  }
 }
 
 function updateFluidFormula(id) {
 
-  var div = document.getElementsByClassName("fluid-formula-select")[0];
-  var children = div.children
+    var div = document.getElementsByClassName("fluid-formula-select")[0];
+    var children = div.children
 
-  for(var i = 0; i < children.length; i++) {
-    if (children[i].value === id.toString()) {
-      children[i].setAttribute("selected", "selected");
+    for (var i = 0; i < children.length; i++) {
+        if (children[i].value === id.toString()) {
+            children[i].setAttribute("selected", "selected");
+        }
     }
-  }
 }
 
 function updateTemperature(id) {
 
-  var data = cacheFluids.find(i => i.id === id);
+    var data = cacheFluids.find(i => i.id === id);
 
-  var input = document.getElementsByClassName("operating-temperature")[0];
-  input.value = data.operatingTemperature
+    var input = document.getElementsByClassName("operating-temperature")[0];
+    input.value = data.operatingTemperature
 }
 
 function updatePressure(id) {
 
-  var data = cacheFluids.find(i => i.id === id);
+    var data = cacheFluids.find(i => i.id === id);
 
-  var input = document.getElementsByClassName("operating-pressure")[0];
-  input.value = data.operatingPressure
+    var input = document.getElementsByClassName("operating-pressure")[0];
+    input.value = data.operatingPressure
 }
 
 function updateViscosity(id) {
 
-  var data = cacheFluids.find(i => i.id === id);
+    var data = cacheFluids.find(i => i.id === id);
 
-  var input = document.getElementsByClassName("dynamic-viscosity")[0];
-  input.value = data.dynamicViscosity
+    var input = document.getElementsByClassName("dynamic-viscosity")[0];
+    input.value = data.dynamicViscosity
 }
 
 function updateDensity(id) {
 
-  var data = cacheFluids.find(i => i.id === id);
+    var data = cacheFluids.find(i => i.id === id);
 
-  var input = document.getElementsByClassName("operating-density")[0];
-  input.value = data.operatingDensity
+    var input = document.getElementsByClassName("operating-density")[0];
+    input.value = data.operatingDensity
 }
 
 
 $("body").on("change", ".technology-select", e => {
-  renderProductlines($( ".technology-select" ).val());
+    renderProductlines($(".technology-select").val());
 });
 
 $("body").on("change", ".productline-select", e => {
-  renderProductlineImage($( ".productline-select" ).val());
+    renderProductlineImage($(".productline-select").val());
 });
 
 $("body").on("click", ".fluid-input", e => {
-  getFluidsByType(e.target.getAttribute("value"));
+    getFluidsByType(e.target.getAttribute("value"));
 });
 
 $("body").on("change", ".fluid-formula-select", e => {
-  updateProcessData($( ".fluid-formula-select" ).val());
+    updateProcessData($(".fluid-formula-select").val());
 });
 
 $("body").on("change", ".fluid-name-select", e => {
-  updateProcessData($( ".fluid-name-select" ).val());
+    console.log("onchange: " +
+        $(".fluid-name-select").val());
+    updateProcessData($(".fluid-name-select").val());
 });
 
 $("#calculateform").submit(e => {
@@ -640,7 +776,12 @@ $("body").on("change", "input", e => {
 });
 
 $("body").on("change", "select", e => {
-    localStorage.setItem(e.target.id, e.target.value)
+    if (e.target.id === "fluidChoice" || e.target.id === "fluidFormulaChoice") {
+        localStorage.setItem("fluidChoice", e.target.value)
+        localStorage.setItem("fluidFormulaChoice", e.target.value)
+    } else {
+        localStorage.setItem(e.target.id, e.target.value)
+    }
     console.log(localStorage);
 })
 
