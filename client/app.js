@@ -218,7 +218,12 @@ function loadFluidCheckBox() {
         var value = localStorage.getItem("checkbox-1-1");
         console.log("loadFluidCheckBox value: " + value);
         var checkBox = document.getElementById("checkbox-1-1")
-        checkBox.checked = value;
+        if (value === "true") {
+            checkBox.checked = value;
+        } else {
+            console.log("removeAttribute entered");
+            checkBox.removeAttribute("checked")
+        }
         adjustLayout(checkBox);
     }
 }
@@ -394,6 +399,7 @@ ADJUST LAYOUT FUNCTIONS IF CUSTOM FLUID start
 
 function adjustLayout(checkBox) {
     console.log("entered adjustLayout");
+    console.log("value of checkbox: " + checkBox.checked);
     adjustLayoutOfViscosityAndDensity(checkBox);
     adjustLayoutOfBoxThirdMiddle(checkBox);
 }
