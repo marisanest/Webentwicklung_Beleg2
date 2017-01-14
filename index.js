@@ -100,7 +100,6 @@ app.get('/api/technologies', (req, res) => {
 
 app.get('/api/fluids', (req, res) => {
 
-  console.log("GET /api/fluids" )
   var fluidType = req.query.fluidType;
 
   if (fluidType != "liquid" && fluidType != "gas") {
@@ -110,7 +109,6 @@ app.get('/api/fluids', (req, res) => {
 
   var data = dataStorage.getFluidsByType(fluidType);
   res.status(200).send();
-  console.log("DATA ==" + data )
   io.emit("fluidsRequested", data);
 });
 

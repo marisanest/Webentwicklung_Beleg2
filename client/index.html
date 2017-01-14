@@ -83,9 +83,9 @@
 
             <div class="box third">
                 <div class="body">
-                    <div class="left">
+                    <div class="left" id="fluid-labels">
                         <div class="label first">Fluid:</div>
-                        <div class="label second">Formula:</div>
+                        <!--<div class="label second formula-label">Formula:</div>-->
                     </div>
                     <div class="middle">
                         <div class="fluid-name" id="fluidName">
@@ -188,42 +188,42 @@
 
 
 
-            <div class="box fifth ">
-                <div class="body ">
-                    <div class="left ">
-                        <div class="label first "> Kind of flow:</div>
-                        <div class="label second "> Flow rate:</div>
+            <div class="box fifth">
+                <div class="body">
+                    <div class="left">
+                        <div class="label first"> Kind of flow:</div>
+                        <div class="label second"> Flow rate:</div>
                     </div>
                     <div class="middle ">
                         <div>
-                            <input class="regular-radio first " type="radio " id="radio-volume" name="kind-of-flow " value="volume " />
-                            <label class="first " for="radio-volume "></label>
-                            <span class="radio-tag ">Volume flow</span>
-                            <input class="regular-radio first " type="radio " id="radio-mass" name="kind-of-flow " value="mass " checked/>
-                            <label class="first mass " for="radio-mass "></label>
-                            <span class="radio-tag mass ">Mass flow</span>
+                            <input class="regular-radio first" type="radio" id="radio-volume" name="kind-of-flow" value="volume" />
+                            <label class="first" for="radio-volume"></label>
+                            <span class="radio-tag">Volume flow</span>
+                            <input class="regular-radio first" type="radio" id="radio-mass" name="kind-of-flow" value="mass" checked/>
+                            <label class="first mass" for="radio-mass"></label>
+                            <span class="radio-tag mass">Mass flow</span>
                         </div>
                         <div class="second ">
-                            <span class="label ">Minimum</span>
-                            <span class="label first ">Operating</span>
-                            <span class="label second ">Maximum</span>
-                            <span class="label third ">Design</span>
+                            <span class="label">Minimum</span>
+                            <span class="label first">Operating</span>
+                            <span class="label second">Maximum</span>
+                            <span class="label third">Design</span>
                         </div>
                         <div>
-                            <input class="text small " name="flowratemin " id="frMin" />
-                            <input class="text small " name="flowrateop " id="frOp" />
-                            <input class="text small " name="flowratemax " id="frMax" />
-                            <input class="text middle " name="flowratedes " id="frDes" />
+                            <input class="text small" name="flowratemin" id="frMin" />
+                            <input class="text small" name="flowrateop" id="frOp" />
+                            <input class="text small" name="flowratemax" id="frMax" />
+                            <input class="text middle" name="flowratedes" id="frDes" />
                         </div>
                     </div>
                     <div class="right ">
-                        <select class="styled-select light small " name="floeratescala " form="calculateform ">
-                            <option value="kgh ">kg/h</option>
-                            <option value="kgs ">kg/s</option>
-                            <option value="kgmin ">kg/min</option>
+                        <select class="styled-select light small" name="floeratescala" form="calculateform">
+                            <option value="kgh">kg/h</option>
+                            <option value="kgs">kg/s</option>
+                            <option value="kgmin">kg/min</option>
                           </select>
-                        <img class="help " src="images/help.svg " alt="help ">
-                        <img class="info " src="images/info.svg " alt="info ">
+                        <img class="help" src="images/help.svg" alt="help">
+                        <img class="info" src="images/info.svg" alt="info">
                     </div>
                 </div>
             </div>
@@ -291,8 +291,10 @@
 <script src="https://code.jquery.com/jquery-3.0.0.min.js "></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js "></script>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js "></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="app.js "></script>
-<script src="adjustLayoutIfCustomFluid.js"></script>
+<script src="flowmetertypes.js"></script>
+<!--<script src="adjustLayoutIfCustomFluid.js"></script>-->
 </body>
 
 </html>
