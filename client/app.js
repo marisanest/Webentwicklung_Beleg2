@@ -9,13 +9,19 @@ socket.on("fluidsRequested", data => {
     initProcessData();
 });
 
+
 getFluidsByType(loadFluidtypeChoice());
 
 function loadFluidtypeChoice() {
     var result = "liquid"
 
-    if (localStorage.hasOwnProperty("radio-liquid") && localStorage.getItem("radio-liquid") === "false") {
-        result = "gas"
+    if (localStorage.hasOwnProperty("radio-liquid")) {
+        var value = localStorage.getItem("radio-liquid");
+        console.log("value is: " + value);
+        if (value === "false") {
+            console.log("Value is false.");
+            result = "gas"
+        }
     }
     return result;
 }
@@ -31,11 +37,10 @@ function initProcessData() {
 function prepareLocalStorage() {
 
     var initialised = (localStorage.hasOwnProperty("radio-gas") && localStorage.hasOwnProperty("radio-liquid"))
-    console.log(localStorage.getItem("radio-gas"))
-    console.log("cacheFluids = " + cacheFluids[0].aggregateType)
+    console.log("inside prepareLocalStorage" + localStorage.getItem("radio-gas"))
+    console.log("inside prepareLocalStorage" + "cacheFluids = " + cacheFluids[0].aggregateType)
     var reset = (localStorage.getItem("radio-gas") != ((cacheFluids[0].aggregateType === "gas").toString()))
-    console.log("RESET = " + reset)
-
+    console.log("inside prepareLocalStorage" + "RESET = " + reset)
     if (!initialised) {
         initLocalStorage();
     } else if (reset) {
@@ -44,15 +49,18 @@ function prepareLocalStorage() {
 }
 
 function initLocalStorage() {
-    localStorage.setItem("radio-gas", "false")
+    log("enter initLocalStorage");
     localStorage.setItem("radio-liquid", "true")
-    localStorage.setItem("radio-volume", "false")
-    localStorage.setItem("radio-mass", "true")
+    localStorage.setItem("radio-gas", "false")
+    localStorage.setItem("radio-volume", "true")
+    localStorage.setItem("radio-mass", "false")
     localStorage.setItem("checkbox-1-1", "false")
     updateProcessDataLocaleStorage(cacheFluids[0].id)
 }
 
+
 function resetLocalStorage() {
+    console.log("entered resetLocalStorage; id: " + cacheFluids[0].id + "aggregateType: " + cacheFluids[0].aggregateType);
     localStorage.setItem("radio-gas", ((cacheFluids[0].aggregateType === "gas").toString()))
     localStorage.setItem("radio-liquid", ((cacheFluids[0].aggregateType === "liquid").toString()))
     updateProcessDataLocaleStorage(cacheFluids[0].id)
@@ -76,8 +84,6 @@ function renderProcessData() {
 function loadLocalStorage() {
     loadRadioButtons()
     loadFluidCheckBox()
-    // Wofür war die Methode gedacht?
-    //loadTextInputs()
 }
 
 function loadRadioButtons() {
@@ -85,37 +91,33 @@ function loadRadioButtons() {
     var checkButtons = ["radio-liquid", "radio-gas", "radio-volume", "radio-mass"]
 
     for (var i = 0; i < checkButtons.length; i++) {
-        var value = localStorage.getItem(checkButtons[i]);
-        document.getElementById(checkButtons[i]).setAttribute("checked", value);
+        if (localStorage.hasOwnProperty(checkButtons[i])) {
+            var value = localStorage.getItem(checkButtons[i]);
+            if (value === "true") {
+                console.log("value = true: " + value);
+                document.getElementById(checkButtons[i]).checked = true;
+            } else {
+                console.log("value = false: " + value);
+                document.getElementById(checkButtons[i]).removeAttribute("checked");
+            }
+        }
     }
 }
 
 function loadFluidCheckBox() {
+    if (localStorage.hasOwnProperty("checkbox-1-1")) {
+        var value = localStorage.getItem("checkbox-1-1");
+        var checkBox = document.getElementById("checkbox-1-1")
 
-    var value = localStorage.getItem("checkbox-1-1");
-    var checkBox = document.getElementById("checkbox-1-1")
-
-    if (value === "true") {
-        checkBox.checked = value;
-        adjustLayout(checkBox);
-    } else {
-        checkBox.removeAttribute("checked")
-    }
-}
-
-// Wofür war die Methode gedacht? => urspruenglich um alle InputFelder zu laden, aber scheint ja ueberfluessig
-/*
-function loadTextInputs() {
-    var inputIds = ["tempMin", "tempMax", "pressMin", "pressMax", "frMin", "frOp", "frMax", "frDes"]
-    for (var i = 0; i < inputIds.length; i++) {
-        if (localStorage.hasOwnProperty(inputIds[i])) {
-            var value = localStorage.getItem(inputIds[i]);
-            ////console.log(inputIds[i]);
-            document.getElementById(inputIds[i]).setAttribute("value", value);
+        if (value === "true") {
+            checkBox.checked = value;
+            adjustLayout(checkBox);
+        } else {
+            checkBox.removeAttribute("checked")
         }
     }
 }
-*/
+
 
 function renderFluidLabel() {
 
@@ -656,6 +658,13 @@ function updateProcessDataLocaleStorage(id) {
 
 $("body").on("click", ".fluid-input", e => {
     getFluidsByType(e.target.getAttribute("value"));
+    if (e.target.id === "radio-liquid") {
+        localStorage.setItem("radio-liquid", "true");
+        localStorage.setItem("radio-gas", "false");
+    } else {
+        localStorage.setItem("radio-gas", "true");
+        localStorage.setItem("radio-liquid", "false");
+    }
 });
 
 $("body").on("change", ".fluid-formula-select", e => {
