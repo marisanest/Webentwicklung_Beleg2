@@ -291,84 +291,84 @@ function adjustLayoutOfBoxThird(checkBox) {
     var fluidFormula = document.getElementById("fluidFormula")
     var fluidLabel = document.getElementById("fluid-labels")
 
-    if (checkBox.checked) {
+    //  if (checkBox.checked) {
 
-        if (fluidName.children[0]) {
-            fluidName.children[0].remove();
-        }
-
-        var input = document.createElement("input")
-        input.id = "fluidInput"
-        input.type = "text"
-        input.className = "text biggest"
-
-        fluidName.appendChild(input)
-
-        //Todo: Muss der alte "customFluid" Input-Wert wieder geladen werden, wenn Checkbox nochmal gechecked wurde? sonst nur else stehen lassen
-        if (localStorage.getItem("fluidInput")) {
-            input.value = localStorage.getItem("fluidInput")
-        } else {
-            input.value = ""
-        }
-
-        if (fluidFormula.children[0]) {
-            fluidFormula.children[0].remove();
-        }
-
-        if (fluidLabel.children[1]) {
-            fluidLabel.children[1].remove();
-        }
-
-    } else {
-        var data = cacheFluids;
-        renderFluidName(data);
-        renderFluidFormula(data);
-        renderFluidLabel();
+    if (fluidName.children[0]) {
+        fluidName.children[0].remove();
     }
+
+    var input = document.createElement("input")
+    input.id = "fluidInput"
+    input.type = "text"
+    input.className = "text biggest"
+
+    fluidName.appendChild(input)
+
+    //Todo: Muss der alte "customFluid" Input-Wert wieder geladen werden, wenn Checkbox nochmal gechecked wurde? sonst nur else-Inhalt stehen lassen
+    if (localStorage.getItem("fluidInput")) {
+        input.value = localStorage.getItem("fluidInput")
+    } else {
+        input.value = ""
+    }
+
+    if (fluidFormula.children[0]) {
+        fluidFormula.children[0].remove();
+    }
+
+    if (fluidLabel.children[1]) {
+        fluidLabel.children[1].remove();
+    }
+
+    /*    } else {
+            var data = cacheFluids;
+            renderFluidName(data);
+            renderFluidFormula(data);
+            renderFluidLabel();
+        }*/
 }
 
 function adjustLayoutOfBoxFourth(checkBox) {
     var tempOp = document.getElementById("tempOp");
     var pressOp = document.getElementById("pressOp");
-    if (checkBox.checked) {
-        pressOp.value = "";
-        tempOp.value = "";
-    } else {
-        var data = cacheFluids;
-        pressOp.value = data[0].operatingPressure;
-        tempOp.value = data[0].operatingTemperature;
-    }
+    //  if (checkBox.checked) {
+    pressOp.value = "";
+    tempOp.value = "";
+    /*    } else {
+            var data = cacheFluids;
+            pressOp.value = data[0].operatingPressure;
+            tempOp.value = data[0].operatingTemperature;
+        }*/
 }
 
 function adjustLayoutOfViscosityAndDensity(checkBox) {
     var viscosity = document.getElementById("viscosity")
     var density = document.getElementById("density")
 
-    if (checkBox.checked) {
-        localStorage.setItem("oldViscosity", viscosity.value)
-        viscosity.value = "";
-        viscosity.setAttribute("type", "text")
-        viscosity.removeAttribute("readonly")
-        viscosity.removeAttribute("class", "text big disabled dynamic-viscosity")
-        viscosity.setAttribute("class", "text big dynamic-viscosity")
-        localStorage.setItem("oldDensity", density.value)
-        density.value = "";
-        density.setAttribute("type", "text")
-        density.removeAttribute("readonly")
-        density.removeAttribute("class", "text big disabled operating-density")
-        density.setAttribute("class", "text big operating-density")
-    } else {
-        var data = cacheFluids;
-        viscosity.setAttribute("readonly", "readonly")
-        viscosity.value = data[0].dynamicViscosity;
-        viscosity.setAttribute("value", localStorage.getItem("oldViscosity"))
-        viscosity.removeAttribute("class", "text big  dynamic-viscosity")
-        viscosity.setAttribute("class", "text big disabled dynamic-viscosity")
-        density.setAttribute("readonly", "readonly")
-        density.value = data[0].operatingDensity;
-        density.removeAttribute("class", "text big operating-density")
-        density.setAttribute("class", "text big disabled operating-density")
-    }
+    //  if (checkBox.checked) {
+    localStorage.setItem("oldViscosity", viscosity.value)
+    viscosity.value = "";
+    viscosity.setAttribute("type", "text")
+    viscosity.removeAttribute("readonly")
+    viscosity.removeAttribute("class", "text big disabled dynamic-viscosity")
+    viscosity.setAttribute("class", "text big dynamic-viscosity")
+    localStorage.setItem("oldDensity", density.value)
+    density.value = "";
+    density.setAttribute("type", "text")
+    density.removeAttribute("readonly")
+    density.removeAttribute("class", "text big disabled operating-density")
+    density.setAttribute("class", "text big operating-density")
+    /*    } else {
+            var data = cacheFluids;
+            viscosity.setAttribute("readonly", "readonly")
+            viscosity.value = data[0].dynamicViscosity;
+            viscosity.setAttribute("value", localStorage.getItem("oldViscosity"))
+            viscosity.removeAttribute("class", "text big  dynamic-viscosity")
+            viscosity.setAttribute("class", "text big disabled dynamic-viscosity")
+            density.setAttribute("readonly", "readonly")
+            density.value = data[0].operatingDensity;
+            density.removeAttribute("class", "text big operating-density")
+            density.setAttribute("class", "text big disabled operating-density")
+        }*/
 }
 /*
  * ADJUST LAYOUT FUNCTIONS IF CUSTOM FLUID END
@@ -429,9 +429,6 @@ function verifyTemp() {
         var minTemp = -273.15
     }
 
-    //TODO: Denken Sie sich notwendige, nicht-fachliche Validierungen aus und implementieren Sie diese!
-    //Mehr als isNaN()?
-
     var valid = (tempElement.value <= maxTemp && tempElement.value >= minTemp && !isNaN(tempElement.value))
 
     if (!valid) {
@@ -463,9 +460,6 @@ function verifyPressure() {
         var maxPress = 500
         var minPress = 0.1
     }
-
-    //TODO: Denken Sie sich notwendige, nicht-fachliche Validierungen aus und implementieren Sie diese!
-    //koennte sein, wenn nicht nur double vorhanden sind?!
 
     var valid = (pressElement.value <= maxPress && pressElement.value >= minPress && !isNaN(pressElement.value))
 
@@ -568,11 +562,6 @@ function calculateDensity(p1, p2, t1, t2) {
     localStorage.setItem("density", newDensity)
 }
 
-//Deprecated
-function displayErrorMessage(element) {
-    //TODO: Tooltips implementieren
-    element.setalert("Temp is to high");
-}
 
 /*
  * CALCULATION FUNCTIONS END
@@ -696,6 +685,7 @@ $("body").on("click", ".fluid-input", e => {
     prepareLocalStorage();
 });
 
+
 $("body").on("change", ".fluid-formula-select", e => {
     updateProcessData($(".fluid-formula-select").val());
     updateProcessDataLocaleStorage($(".fluid-formula-select").val())
@@ -709,7 +699,7 @@ $("body").on("change", ".fluid-name-select", e => {
 
 $("#calculateform").submit(e => {
     e.preventDefault();
-    verifyAll(); //Deprecated!?
+    verifyAll();
 });
 
 $("body").on("change", "#radio-volume", e => {
@@ -762,16 +752,9 @@ $("body").on("change", "#fluidInput", e => {
     }
 });
 
-//Deprecated?!
-$("body").on("change", "input", e => {
-    if (e.target.getAttribute("validationError") == true) {
-        console.log("Enters change not mouseover.");
-        displayErrorMessage(e.target);
-    }
-});
 
-//Deprecated?!
 $("body").on("mouseover", "input", e => {
+    console.log("Enters mouseover not change.");
     //function aufrufen, die checked ob valError Attribut auf e.target gesetzt ist; wenn ja alert anzeigen
     if (e.target.getAttribute("validationError") == true) {
         displayErrorMessage(e.target);
@@ -804,6 +787,10 @@ function renderTechnologies() {
     data = cacheTechnologies;
 
     var div = document.getElementsByClassName("technology")[0];
+    if (div.children[0]) {
+        div.children[0].remove();
+    }
+
     var select = document.createElement("select");
 
     select.id = "technologyChoice";
@@ -969,13 +956,6 @@ function getTechnologies() {
     request.send();
 }
 
-/*$("body").on("change", ".technology-select", e => {
-
-});
-
-$("body").on("change", ".productline-select", e => {
-
-});*/
 
 $("body").on("change", "#technologyChoice", e => {
     renderProductlines($(".technology-select").val());
