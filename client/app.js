@@ -9,17 +9,17 @@ socket.on("fluidsRequested", data => {
     initProcessData();
 });
 
+revertCheckbox = false;
 
-getFluidsByType(loadFluidtypeChoice());
+getFluidsByType();
+//localStorage.clear();
 
 function loadFluidtypeChoice() {
     var result = "liquid"
 
     if (localStorage.hasOwnProperty("radio-liquid")) {
         var value = localStorage.getItem("radio-liquid");
-        console.log("value is: " + value);
         if (value === "false") {
-            console.log("Value is false.");
             result = "gas"
         }
     }
@@ -73,7 +73,10 @@ function renderProcessData() {
     renderOperatingPressure(data);
     renderDynamicViscosity(data);
     renderOperatingDensity(data);
-    loadLocalStorage();
+    if (!revertCheckbox) {
+        loadLocalStorage();
+    }
+    revertCheckbox = false;
 }
 
 /*
@@ -92,10 +95,8 @@ function loadRadioButtons() {
         if (localStorage.hasOwnProperty(checkButtons[i])) {
             var value = localStorage.getItem(checkButtons[i]);
             if (value === "true") {
-                console.log("value = true: " + value);
                 document.getElementById(checkButtons[i]).checked = true;
             } else {
-                console.log("value = false: " + value);
                 document.getElementById(checkButtons[i]).removeAttribute("checked");
             }
         }
@@ -151,7 +152,9 @@ function renderFluidName(data) {
         option.value = data[i].id;
         select.appendChild(option);
     }
-    loadFluidChoice();
+    if (!revertCheckbox) {
+        loadFluidChoice();
+    }
 }
 
 function loadFluidChoice() {
@@ -189,7 +192,9 @@ function renderFluidFormula(data) {
         option.value = data[i].id;
         select.appendChild(option);
     }
-    loadFluidFormulaChoice();
+    if (!revertCheckbox) {
+        loadFluidFormulaChoice();
+    }
 }
 
 function loadFluidFormulaChoice() {
@@ -208,25 +213,33 @@ function loadFluidFormulaChoice() {
 function renderOperatingTemperature(data) {
     var input = document.getElementById("tempOp")
     input.value = data[0].operatingTemperature;
-    loadInputValue(input);
+    if (!revertCheckbox) {
+        loadInputValue(input);
+    }
 }
 
 function renderOperatingPressure(data) {
     var input = document.getElementById("pressOp")
     input.value = data[0].operatingPressure;
-    loadInputValue(input);
+    if (!revertCheckbox) {
+        loadInputValue(input);
+    }
 }
 
 function renderDynamicViscosity(data) {
     var input = document.getElementById("viscosity")
     input.value = data[0].dynamicViscosity;
-    loadInputValue(input);
+    if (!revertCheckbox) {
+        loadInputValue(input);
+    }
 }
 
 function renderOperatingDensity(data) {
     var input = document.getElementById("density")
     input.value = data[0].operatingDensity;
-    loadInputValue(input);
+    if (!revertCheckbox) {
+        loadInputValue(input);
+    }
 }
 
 function loadInputValue(input) {
@@ -238,7 +251,8 @@ function loadInputValue(input) {
  * AJAX METHODS BEGIN
  */
 
-function getFluidsByType(fluidType) {
+function getFluidsByType() {
+    var fluidType = loadFluidtypeChoice()
     var request = new XMLHttpRequest();
     request.open("GET", "/api/fluids?fluidType=" + fluidType);
     request.addEventListener('load', function(event) {
@@ -260,9 +274,16 @@ function getFluidsByType(fluidType) {
  */
 
 function adjustLayout(checkBox) {
-    adjustLayoutOfViscosityAndDensity(checkBox);
-    adjustLayoutOfBoxThird(checkBox);
+    if (checkBox.checked) {
+        adjustLayoutOfBoxThird(checkBox);
+        adjustLayoutOfBoxFourth(checkBox);
+        adjustLayoutOfViscosityAndDensity(checkBox);
+    } else {
+        getFluidsByType();
+        revertCheckbox = true;
+    }
 }
+
 
 function adjustLayoutOfBoxThird(checkBox) {
 
@@ -283,15 +304,13 @@ function adjustLayoutOfBoxThird(checkBox) {
 
         fluidName.appendChild(input)
 
-
+        //Todo: Muss der alte "customFluid" Input-Wert wieder geladen werden, wenn Checkbox nochmal gechecked wurde? sonst nur else stehen lassen
         if (localStorage.getItem("fluidInput")) {
             input.value = localStorage.getItem("fluidInput")
         } else {
             input.value = ""
         }
 
-        //TODO: what class should that have?
-        //  fluidFormula.setAttribute("hidden", "true");
         if (fluidFormula.children[0]) {
             fluidFormula.children[0].remove();
         }
@@ -304,37 +323,49 @@ function adjustLayoutOfBoxThird(checkBox) {
         var data = cacheFluids;
         renderFluidName(data);
         renderFluidFormula(data);
-        renderOperatingTemperature(data);
-        renderOperatingPressure(data);
-        renderDynamicViscosity(data);
-        renderOperatingDensity(data);
         renderFluidLabel();
+    }
+}
+
+function adjustLayoutOfBoxFourth(checkBox) {
+    var tempOp = document.getElementById("tempOp");
+    var pressOp = document.getElementById("pressOp");
+    if (checkBox.checked) {
+        pressOp.value = "";
+        tempOp.value = "";
+    } else {
+        var data = cacheFluids;
+        pressOp.value = data[0].operatingPressure;
+        tempOp.value = data[0].operatingTemperature;
     }
 }
 
 function adjustLayoutOfViscosityAndDensity(checkBox) {
     var viscosity = document.getElementById("viscosity")
     var density = document.getElementById("density")
+
     if (checkBox.checked) {
         localStorage.setItem("oldViscosity", viscosity.value)
-        viscosity.setAttribute("value", "")
+        viscosity.value = "";
         viscosity.setAttribute("type", "text")
         viscosity.removeAttribute("readonly")
         viscosity.removeAttribute("class", "text big disabled dynamic-viscosity")
         viscosity.setAttribute("class", "text big dynamic-viscosity")
         localStorage.setItem("oldDensity", density.value)
-        density.setAttribute("value", "")
+        density.value = "";
         density.setAttribute("type", "text")
         density.removeAttribute("readonly")
         density.removeAttribute("class", "text big disabled operating-density")
         density.setAttribute("class", "text big operating-density")
     } else {
+        var data = cacheFluids;
         viscosity.setAttribute("readonly", "readonly")
+        viscosity.value = data[0].dynamicViscosity;
         viscosity.setAttribute("value", localStorage.getItem("oldViscosity"))
         viscosity.removeAttribute("class", "text big  dynamic-viscosity")
         viscosity.setAttribute("class", "text big disabled dynamic-viscosity")
         density.setAttribute("readonly", "readonly")
-        density.setAttribute("value", localStorage.getItem("oldDensity"))
+        density.value = data[0].operatingDensity;
         density.removeAttribute("class", "text big operating-density")
         density.setAttribute("class", "text big disabled operating-density")
     }
@@ -558,7 +589,6 @@ function updateProcessData(id) {
     if (!id || isNaN(id)) {
         return;
     }
-
     updateFluidName(id);
     updateFluidFormula(id);
     updateTemperature(id);
@@ -655,7 +685,6 @@ function updateProcessDataLocaleStorage(id) {
  */
 
 $("body").on("click", ".fluid-input", e => {
-    getFluidsByType(e.target.getAttribute("value"));
     if (e.target.id === "radio-liquid") {
         localStorage.setItem("radio-liquid", "true");
         localStorage.setItem("radio-gas", "false");
@@ -663,6 +692,8 @@ $("body").on("click", ".fluid-input", e => {
         localStorage.setItem("radio-gas", "true");
         localStorage.setItem("radio-liquid", "false");
     }
+    getFluidsByType();
+    prepareLocalStorage();
 });
 
 $("body").on("change", ".fluid-formula-select", e => {
@@ -692,24 +723,31 @@ $("body").on("change", "#radio-mass", e => {
 });
 
 $("body").on("change", "#tempOp", e => {
-    verifyTemp();
-    localStorage.setItem(e.target.id, e.target.value)
-    console.log("Saving in local storage: " + e.target.id + " and value: " + e.target.value);
+    if (verifyTemp()) {
+        localStorage.setItem(e.target.id, e.target.value)
+        console.log("Saving in local storage: " + e.target.id + " and value: " + e.target.value);
+    }
 });
 
 $("body").on("change", "#pressOp", e => {
-    verifyPressure();
-    localStorage.setItem(e.target.id, e.target.value)
+    if (verifyPressure()) {
+        localStorage.setItem(e.target.id, e.target.value)
+        console.log("Saving in local storage: " + e.target.id + " and value: " + e.target.value);
+    }
 });
 
 $("body").on("change", "#density", e => {
-    verifyDens();
-    localStorage.setItem(e.target.id, e.target.value)
+    if (verifyDens()) {
+        localStorage.setItem(e.target.id, e.target.value)
+        console.log("Saving in local storage: " + e.target.id + " and value: " + e.target.value);
+    }
 });
 
 $("body").on("change", "#viscosity", e => {
-    verifyVisc();
-    localStorage.setItem(e.target.id, e.target.value)
+    if (verifyVisc()) {
+        localStorage.setItem(e.target.id, e.target.value)
+        console.log("Saving in local storage: " + e.target.id + " and value: " + e.target.value);
+    }
 });
 
 $("body").on("change", "#checkbox-1-1", e => {
@@ -719,13 +757,15 @@ $("body").on("change", "#checkbox-1-1", e => {
 });
 
 $("body").on("change", "#fluidInput", e => {
-    verifyFluid();
-    localStorage.setItem(e.target.id, e.target.value)
+    if (verifyFluid()) {
+        localStorage.setItem(e.target.id, e.target.value)
+    }
 });
 
 //Deprecated?!
 $("body").on("change", "input", e => {
     if (e.target.getAttribute("validationError") == true) {
+        console.log("Enters change not mouseover.");
         displayErrorMessage(e.target);
     }
 });
