@@ -35,7 +35,6 @@ function initProcessData() {
 }
 
 function prepareLocalStorage() {
-
     var initialised = (localStorage.hasOwnProperty("radio-gas") && localStorage.hasOwnProperty("radio-liquid"))
     console.log("inside prepareLocalStorage" + localStorage.getItem("radio-gas"))
     console.log("inside prepareLocalStorage" + "cacheFluids = " + cacheFluids[0].aggregateType)
@@ -49,7 +48,6 @@ function prepareLocalStorage() {
 }
 
 function initLocalStorage() {
-    log("enter initLocalStorage");
     localStorage.setItem("radio-liquid", "true")
     localStorage.setItem("radio-gas", "false")
     localStorage.setItem("radio-volume", "true")
@@ -403,7 +401,7 @@ function verifyTemp() {
     //TODO: Denken Sie sich notwendige, nicht-fachliche Validierungen aus und implementieren Sie diese!
     //Mehr als isNaN()?
 
-    var valid = (tempElement.value < maxTemp && tempElement.value > minTemp && !isNaN(tempElement.value))
+    var valid = (tempElement.value <= maxTemp && tempElement.value >= minTemp && !isNaN(tempElement.value))
 
     if (!valid) {
         tempElement.setAttribute("validationError", "true");
@@ -438,7 +436,7 @@ function verifyPressure() {
     //TODO: Denken Sie sich notwendige, nicht-fachliche Validierungen aus und implementieren Sie diese!
     //koennte sein, wenn nicht nur double vorhanden sind?!
 
-    var valid = (pressElement.value < maxPress && pressElement.value > minPress && !isNaN(pressElement.value))
+    var valid = (pressElement.value <= maxPress && pressElement.value >= minPress && !isNaN(pressElement.value))
 
     if (!valid) {
         pressElement.setAttribute("validationError", "true");
@@ -465,7 +463,7 @@ function verifyVisc() {
     if (customFluid) {
 
         var viscosityElement = document.getElementById("viscosity");
-        valid = (viscosityElement.value < 2 && viscosityElement.value > 0.01 && !isNaN(viscosityElement.value))
+        valid = (viscosityElement.value <= 2 && viscosityElement.value >= 0.01 && !isNaN(viscosityElement.value))
 
         if (!valid) {
             viscosityElement.setAttribute("validationError", "true");
@@ -490,7 +488,7 @@ function verifyDens() {
 
         var densityElement = document.getElementById("density");
 
-        valid = (densityElement.value < 200 && densityElement.value > 0.01 && !isNaN(densityElement.value))
+        valid = (densityElement.value <= 200 && densityElement.value >= 0.01 && !isNaN(densityElement.value))
 
         if (!valid) {
             densityElement.setAttribute("validationError", "true");
