@@ -416,15 +416,22 @@ select.light {
 .footer img.generate {
     opacity: 0.7;
     float: right;
-    margin-right: 73px;
+    margin-right: 123px;
     filter: grayscale(100%);
 }
 
-.footer img.reset {
-    opacity: 0.7;
-    float: right;
-    margin-right: 24px;
-    filter: grayscale(100%);
+input.reset {
+    position: absolute;
+    margin-left: 630px;
+    margin-top: -32px;
+}
+
+span.reset {
+    position: absolute;
+    margin-left: 662px;
+    margin-top: -26px;
+    font-size: 11px;
+    color: rgb(128, 128, 128);
 }
 
 .footer span {
@@ -443,11 +450,6 @@ select.light {
     line-height: 12px;
     width: 70px;
     right: 63px;
-}
-
-.footer span.reset {
-    color: rgb(128, 128, 128);
-    right: 6px;
 }
 
 .regular-checkbox+label {}

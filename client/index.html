@@ -59,7 +59,6 @@
                 </div>
             </div>
 
-
             <div class="box third">
                 <div class="body">
                     <div class="left" id="fluid-labels">
@@ -96,9 +95,9 @@
                             <span class="label first">Operating</span>
                             <span class="label second">Maximum</span>
                         </div>
-                        <div>
+                        <div id="temperaturInputs">
                             <input class="text small" id="tempMin" name="temperaturmin" />
-                            <input class="text small operating-temperature" id="tempOp" name="temperaturop" value="" />
+                            <input class="text small operating-temperature" id="tempOp" name="temperaturop" />
                             <input class="text small" id="tempMax" name="temperaturmax" />
                             <select class="styled-select light small tupl" name="temeraturscala" form="calculateform">
                             <option value="celsius">°C</option>
@@ -106,43 +105,43 @@
                             <option value="fahrenheit">°F</option>
                           </select>
                         </div>
-                        <div>
-                            <input class="text small " id="pressMin" name="pressuremin " />
-                            <input class="text small operating-pressure " id="pressOp" name="pressureop " value="" />
-                            <input class="text small " id="pressMax" name="pressuremax " />
-                            <select class="styled-select light small tupl " name="pressurescala " form="calculateform ">
-                            <option value="bar ">bar</option>
-                            <option value="kpa ">KPa</option>
-                            <option value="ncm ">N/cm<sup>3</sup></option>
+                        <div id="pressureInputs">
+                            <input class="text small" id="pressMin" name="pressuremin" />
+                            <input class="text small operating-pressure" id="pressOp" name="pressureop" />
+                            <input class="text small" id="pressMax" name="pressuremax" />
+                            <select class="styled-select light small tupl" name="pressurescala" form="calculateform">
+                            <option value="bar">bar</option>
+                            <option value="kpa">KPa</option>
+                            <option value="ncm">N/cm<sup>3</sup></option>
                           </select>
                         </div>
-                        <div>
-                            <input class="text big disabled dynamic-viscosity" id="viscosity" readonly="readonly" name="dynamicvis" value="1" />
+                        <div id="viscosityInputs">
+                            <input class="text big disabled dynamic-viscosity" id="viscosity" readonly="readonly" name="dynamicvis" />
                             <select class="styled-select light small" name="dynamicvisscala">
                             <option value="mpas">mPas</option>
                             <option value="pas">Pas</option>
                             <option value="kgms">kg/ms</option>
                           </select>
                         </div>
-                        <div>
-                            <input class="text big disabled operating-density " id="density" readonly="readonly " name="operatingden " value="1 " />
-                            <select class="styled-select light small " name="operatingdenscala " form="calculateform ">
-                            <option value="kgl ">kg/l</option>
-                            <option value="kgm3 ">kg/m<sup>3</sup></option>
-                            <option value="lbin3 ">lb/in<sup>3</sup></option>
+                        <div id="densityInputs">
+                            <input class="text big disabled operating-density" id="density" readonly="readonly" name="operatingden" />
+                            <select class="styled-select light small" name="operatingdenscala" form="calculateform">
+                            <option value="kgl">kg/l</option>
+                            <option value="kgm3">kg/m<sup>3</sup></option>
+                            <option value="lbin3">lb/in<sup>3</sup></option>
                           </select>
                         </div>
                     </div>
-                    <div class="right ">
+                    <div class="right">
                         <div></div>
                         <div>
                             <br>
                             <br>
-                            <select class="styled-select light small " name="result " class="select " form="calculateform ">
-                                <option value="abs ">absolut</option>
-                                <option value="gauge ">gauge</option>
+                            <select class="styled-select light small" name="result" class="select" form="calculateform">
+                                <option value="abs">absolut</option>
+                                <option value="gauge">gauge</option>
                               </select>
-                            <img class="info " src="images/info.svg " alt="info ">
+                            <img class="info" src="images/info.svg" alt="info">
                         </div>
                     </div>
                 </div>
@@ -156,7 +155,7 @@
                         <div class="label first"> Kind of flow:</div>
                         <div class="label second"> Flow rate:</div>
                     </div>
-                    <div class="middle ">
+                    <div class="middle">
                         <div>
                             <input class="regular-radio first" type="radio" id="radio-volume" name="kind-of-flow" value="volume" checked/>
                             <label class="first" for="radio-volume"></label>
@@ -165,7 +164,7 @@
                             <label class="first mass" for="radio-mass"></label>
                             <span class="radio-tag mass">Mass flow</span>
                         </div>
-                        <div class="second ">
+                        <div class="second">
                             <span class="label">Minimum</span>
                             <span class="label first">Operating</span>
                             <span class="label second">Maximum</span>
@@ -178,7 +177,7 @@
                             <input class="text middle" name="flowratedes" id="frDes" />
                         </div>
                     </div>
-                    <div class="right ">
+                    <div class="right">
                         <select class="styled-select light small" name="floeratescala" form="calculateform">
                             <option value="kgh">kg/h</option>
                             <option value="kgs">kg/s</option>
@@ -190,30 +189,30 @@
                 </div>
             </div>
 
-            <div class="box sixth ">
-                <div class="header ">
-                    <img src="images/headerdotDown.svg " alt="dot " class="dot ">
+            <div class="box sixth">
+                <div class="header">
+                    <img src="images/headerdotDown.svg" alt="dot" class="dot">
                     <span>BASIC FILTERS FOR THE RESULT LIST</span>
-                    <img src="images/help.svg " alt="help " class="help ">
-                    <img src="images/info.svg " alt="info " class="info ">
+                    <img src="images/help.svg" alt="help" class="help">
+                    <img src="images/info.svg" alt="info" class="info">
                 </div>
-                <div class="body ">
-                    <div class="left ">
-                        <div class="six ">
-                            <select class="styled-select dark " form="calculateform ">
-                                    <option value="all ">All</option>
+                <div class="body">
+                    <div class="left">
+                        <div class="six">
+                            <select class="styled-select dark" form="calculateform">
+                                    <option value="all">All</option>
                                   </select>
                             <span> Process connection</span>
                         </div>
-                        <div class="six ">
-                            <select class="styled-select dark " form="calculateform ">
-                                    <option value="all ">All</option>
+                        <div class="six">
+                            <select class="styled-select dark" form="calculateform">
+                                    <option value="all">All</option>
                                   </select>
                             <span>Transmitter mounting type</span>
                         </div>
                     </div>
-                    <div class="right ">
-                        <div class="six ">
+                    <div class="right >
+                        <div class=" six ">
                             <select class="styled-select dark " form="calculateform ">
                                     <option value="all ">All</option>
                                   </select>
@@ -234,16 +233,15 @@
             </div>
 
             <div class="footer ">
-                <div>
-                    <input id="calculateInput " type="image" src="images/Calculate.svg " alt="calculate ">
-                    <span class="calc "> Calculate</span>
-                    <img class="reset " src="images/Reset.svg " alt="reset ">
-                    <span class="reset "> Reset</span>
-                    <img class="generate " src="images/GenerateDataSheet.svg " alt="generate ">
-                    <span class="generate "> Generate data sheet</span>
-                </div>
+                <input id="calculateInput " type="image " src="images/Calculate.svg " alt="calculate ">
+                <span class="calc "> Calculate</span>
+
+                <img class="generate " src="images/GenerateDataSheet.svg " alt="generate ">
+                <span class="generate "> Generate data sheet</span>
             </div>
         </form>
+        <input id="resetInput " type="image " class="reset " src="images/Reset.svg " alt="reset ">
+        <span class="reset "> Reset</span>
     </div>
 </body>
 
@@ -253,7 +251,10 @@
 <script src="https://code.jquery.com/jquery-3.0.0.min.js "></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js "></script>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js "></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet " href="/lib/tooltip-1.1.0/dist/css/tooltip-theme-arrows.css " />
+<script src="/lib/tether-1.4.0/dist/js/tether.min.js "></script>
+<script src="/lib/drop-1.2.2/dist/js/drop.min.js "></script>
+<script src="/lib/tooltip-1.1.0/dist/js/tooltip.min.js "></script>
 <script src="app.js "></script>
 </body>
 
