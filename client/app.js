@@ -1072,8 +1072,10 @@ $("body").on("click", ".fluid-input", e => {
         localStorage.setItem("radio-gas", "true");
         localStorage.setItem("radio-liquid", "false");
     }
-    getFluidsByType();
-    prepareLocalStorage();
+    if(localStorage.getItem("checkbox-1-1") === "false") {
+      getFluidsByType();
+      prepareLocalStorage();
+    }
 });
 
 $("body").on("change", "#checkbox-1-1", e => {
