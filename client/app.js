@@ -258,6 +258,7 @@ function renderOperatingTemperature(data) {
     if (!revertCheckbox) {
         loadInputValue(input);
     }
+    verifyTemp();
 }
 
 function renderOperatingPressure(data) {
@@ -268,6 +269,7 @@ function renderOperatingPressure(data) {
     if (!revertCheckbox) {
         loadInputValue(input);
     }
+    verifyPressure();
 }
 
 function renderDynamicViscosity(data) {
@@ -440,18 +442,24 @@ function adjustLayoutOfViscosityAndDensity(checkBox) {
 /*
  * VERIFICATION FUNCTIONS BEGIN
  */
+ function onlyVerifyAll() {
+
+     var validFluid = verifyFluid();
+     var validTemp = verifyTemp();
+     var validPressure = verifyPressure();
+     var validVisc = verifyVisc();
+     var validDens = verifyDens();
+ }
+
+
 
 function verifyAll() {
 
-    validFluid = verifyFluid();
-    validTemp = verifyTemp();
-    validPressure = verifyPressure();
-    validVisc = true;
-    validDens = true;
-    if(document.getElementById("checkbox-1-1").checked) {
-      validVisc = verifyVisc();
-      validDens = verifyDens();
-    }
+    var validFluid = verifyFluid();
+    var validTemp = verifyTemp();
+    var validPressure = verifyPressure();
+    var validVisc = verifyVisc();
+    var validDens = verifyDens();
 
     if (validFluid && validTemp && validPressure && validVisc && validDens) {
         calculate();
@@ -653,6 +661,20 @@ function verifyVisc() {
 
             viscosityInputs.replaceChild(input, viscosityInputs.children[0])
         }
+    } else {
+
+      var viscosityInputs = document.getElementById("viscosityInputs")
+
+      var input = document.createElement("input")
+      input.id = "viscosity"
+      input.name = "dynamicvis"
+      input.className = "text big disabled dynamic-viscosity"
+      input.setAttribute("readonly", "true")
+      input.value = viscosity
+      input.setAttribute("validationError", "false");
+
+      viscosityInputs.replaceChild(input, viscosityInputs.children[0])
+
     }
 
     return valid
@@ -698,7 +720,21 @@ function verifyDens() {
 
             densityInputs.replaceChild(input, densityInputs.children[0])
         }
+    } else {
+
+        var densityInputs = document.getElementById("densityInputs")
+
+        var input = document.createElement("input")
+        input.id = "density"
+        input.name = "operatingden"
+        input.className = "text big disabled operating-density"
+        input.setAttribute("readonly", "true")
+        input.value = density
+        input.setAttribute("validationError", "false");
+
+        densityInputs.replaceChild(input, densityInputs.children[0])
     }
+
     return valid
 }
 
@@ -1047,6 +1083,7 @@ $("body").on("change", "#checkbox-1-1", e => {
     }
     localStorage.setItem(e.target.id, checkBox.checked);
     adjustLayout(checkBox);
+    onlyVerifyAll();
 });
 
 $("body").on("change", ".fluid-formula-select", e => {
@@ -1061,22 +1098,27 @@ $("body").on("change", ".fluid-name-select", e => {
 
 $("body").on("change", "#fluidInput", e => {
     localStorage.setItem(e.target.id, e.target.value);
+    verifyFluid();
 });
 
 $("body").on("change", "#tempOp", e => {
     localStorage.setItem(e.target.id, e.target.value);
+    verifyTemp();
 });
 
 $("body").on("change", "#pressOp", e => {
     localStorage.setItem(e.target.id, e.target.value);
+    verifyPressure();
 });
 
 $("body").on("change", "#density", e => {
     localStorage.setItem(e.target.id, e.target.value);
+    verifyDens();
 });
 
 $("body").on("change", "#viscosity", e => {
     localStorage.setItem(e.target.id, e.target.value);
+    verifyVisc();
 });
 
 $("body").on("change", "#radio-volume", e => {
