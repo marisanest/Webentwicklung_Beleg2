@@ -314,34 +314,34 @@ function adjustLayout(checkBox) {
 
     } else {
 
-        if(localStorage.getItem("radio-liquid") === "true") {
+        if (localStorage.getItem("radio-liquid") === "true") {
 
-          localStorage.setItem("radio-liquid", "false");
-          localStorage.setItem("radio-gas", "true");
-          getFluidsByType();
+            localStorage.setItem("radio-liquid", "false");
+            localStorage.setItem("radio-gas", "true");
+            getFluidsByType();
 
-          adjustLayoutOfViscosityAndDensity(checkBox);
+            adjustLayoutOfViscosityAndDensity(checkBox);
 
-          localStorage.setItem("radio-liquid", "true");
-          localStorage.setItem("radio-gas", "false");
-          getFluidsByType();
+            localStorage.setItem("radio-liquid", "true");
+            localStorage.setItem("radio-gas", "false");
+            getFluidsByType();
 
-          adjustLayoutOfViscosityAndDensity(checkBox);
-          revertCheckbox = true;
+            adjustLayoutOfViscosityAndDensity(checkBox);
+            revertCheckbox = true;
         } else {
 
-          localStorage.setItem("radio-liquid", "true");
-          localStorage.setItem("radio-gas", "false");
-          getFluidsByType();
+            localStorage.setItem("radio-liquid", "true");
+            localStorage.setItem("radio-gas", "false");
+            getFluidsByType();
 
-          adjustLayoutOfViscosityAndDensity(checkBox);
+            adjustLayoutOfViscosityAndDensity(checkBox);
 
-          localStorage.setItem("radio-liquid", "false");
-          localStorage.setItem("radio-gas", "true");
-          getFluidsByType();
+            localStorage.setItem("radio-liquid", "false");
+            localStorage.setItem("radio-gas", "true");
+            getFluidsByType();
 
-          adjustLayoutOfViscosityAndDensity(checkBox);
-          revertCheckbox = true;
+            adjustLayoutOfViscosityAndDensity(checkBox);
+            revertCheckbox = true;
         }
     }
 }
@@ -403,35 +403,35 @@ function adjustLayoutOfViscosityAndDensity(checkBox) {
 
     if (checkBox.checked) {
 
-      localStorage.setItem("oldViscosity", viscosity.value)
+        localStorage.setItem("oldViscosity", viscosity.value)
 
-      if (localStorage.getItem("viscosity")) {
-          viscosity.value = localStorage.getItem("viscosity")
-      } else {
-          viscosity.value = ""
-      }
+        if (localStorage.getItem("viscosity")) {
+            viscosity.value = localStorage.getItem("viscosity")
+        } else {
+            viscosity.value = ""
+        }
 
-      viscosity.removeAttribute("readonly")
-      viscosity.setAttribute("class", "text big dynamic-viscosity")
+        viscosity.removeAttribute("readonly")
+        viscosity.setAttribute("class", "text big dynamic-viscosity")
 
 
-      localStorage.setItem("oldDensity", density.value)
+        localStorage.setItem("oldDensity", density.value)
 
-      if (localStorage.getItem("density")) {
-          density.value = localStorage.getItem("density")
-      } else {
-          density.value = ""
-      }
+        if (localStorage.getItem("density")) {
+            density.value = localStorage.getItem("density")
+        } else {
+            density.value = ""
+        }
 
-      density.removeAttribute("readonly")
-      density.setAttribute("class", "text big operating-density")
+        density.removeAttribute("readonly")
+        density.setAttribute("class", "text big operating-density")
 
     } else {
-      viscosity.setAttribute("readonly", "true")
-      viscosity.setAttribute("class", "text big disabled dynamic-viscosity")
+        viscosity.setAttribute("readonly", "true")
+        viscosity.setAttribute("class", "text big disabled dynamic-viscosity")
 
-      density.setAttribute("readonly", "true")
-      density.setAttribute("class", "text big disabled operating-density")
+        density.setAttribute("readonly", "true")
+        density.setAttribute("class", "text big disabled operating-density")
     }
 }
 
@@ -442,14 +442,14 @@ function adjustLayoutOfViscosityAndDensity(checkBox) {
 /*
  * VERIFICATION FUNCTIONS BEGIN
  */
- function onlyVerifyAll() {
+function onlyVerifyAll() {
 
-     var validFluid = verifyFluid();
-     var validTemp = verifyTemp();
-     var validPressure = verifyPressure();
-     var validVisc = verifyVisc();
-     var validDens = verifyDens();
- }
+    var validFluid = verifyFluid();
+    var validTemp = verifyTemp();
+    var validPressure = verifyPressure();
+    var validVisc = verifyVisc();
+    var validDens = verifyDens();
+}
 
 
 
@@ -486,10 +486,10 @@ function verifyFluid() {
             fluidElement.setAttribute("validationError", "true");
 
             new Tooltip({
-              target: document.querySelector('#fluidInput'),
-              content: "Es muss ein Fluid eingegben werden, das mindestens aus einem Buchstaben oder einer Zahl besteht!",
-              classes: 'tooltip-theme-arrows',
-              position: 'bottom center'
+                target: document.querySelector('#fluidInput'),
+                content: "Es muss ein Fluid eingegben werden, das mindestens aus einem Buchstaben oder einer Zahl besteht!",
+                classes: 'tooltip-theme-arrows',
+                position: 'bottom center'
             })
 
         } else {
@@ -531,21 +531,21 @@ function verifyTemp() {
 
         if (customFluid) {
 
-          new Tooltip({
-            target: document.querySelector('#tempOp'),
-            content: "Es muss eine Temperatur eingegben werden, die zwischen -200°C und 350°C liegt!",
-            classes: 'tooltip-theme-arrows',
-            position: 'bottom center'
-          })
+            new Tooltip({
+                target: document.querySelector('#tempOp'),
+                content: "Es muss eine Temperatur eingegben werden, die zwischen -200°C und 350°C liegt!",
+                classes: 'tooltip-theme-arrows',
+                position: 'bottom center'
+            })
 
         } else {
 
-          new Tooltip({
-            target: document.querySelector('#tempOp'),
-            content: "Es muss eine Temperatur eingegben werden, die zwischen -273.15°C und 1000°C liegt!",
-            classes: 'tooltip-theme-arrows',
-            position: 'bottom center'
-          })
+            new Tooltip({
+                target: document.querySelector('#tempOp'),
+                content: "Es muss eine Temperatur eingegben werden, die zwischen -273.15°C und 1000°C liegt!",
+                classes: 'tooltip-theme-arrows',
+                position: 'bottom center'
+            })
 
         }
     } else {
@@ -587,21 +587,21 @@ function verifyPressure() {
         pressElement.setAttribute("data-toggle", "tooltip");
         if (customFluid) {
 
-          new Tooltip({
-            target: document.querySelector('#pressOp'),
-            content: "Es muss ein Druck eingegben werden, der zwischen 0 bar und 200 bar liegt!",
-            classes: 'tooltip-theme-arrows',
-            position: 'bottom center'
-          })
+            new Tooltip({
+                target: document.querySelector('#pressOp'),
+                content: "Es muss ein Druck eingegben werden, der zwischen 0 bar und 200 bar liegt!",
+                classes: 'tooltip-theme-arrows',
+                position: 'bottom center'
+            })
 
         } else {
 
-          new Tooltip({
-            target: document.querySelector('#pressOp'),
-            content: "Es muss ein Druck eingegben werden, der zwischen 0.1 bar und 500 bar liegt!",
-            classes: 'tooltip-theme-arrows',
-            position: 'bottom center'
-          })
+            new Tooltip({
+                target: document.querySelector('#pressOp'),
+                content: "Es muss ein Druck eingegben werden, der zwischen 0.1 bar und 500 bar liegt!",
+                classes: 'tooltip-theme-arrows',
+                position: 'bottom center'
+            })
 
         }
     } else {
@@ -642,10 +642,10 @@ function verifyVisc() {
             viscosityElement.setAttribute("class", "text big red dynamic-viscosity")
 
             new Tooltip({
-              target: document.querySelector('#viscosity'),
-              content: "Es muss eine Viscosität eingegben werden, die zwischen 0.01 mPas und 2 mPas liegt!",
-              classes: 'tooltip-theme-arrows',
-              position: 'bottom center'
+                target: document.querySelector('#viscosity'),
+                content: "Es muss eine Viscosität eingegben werden, die zwischen 0.01 mPas und 2 mPas liegt!",
+                classes: 'tooltip-theme-arrows',
+                position: 'bottom center'
             })
 
         } else {
@@ -663,17 +663,17 @@ function verifyVisc() {
         }
     } else {
 
-      var viscosityInputs = document.getElementById("viscosityInputs")
+        var viscosityInputs = document.getElementById("viscosityInputs")
 
-      var input = document.createElement("input")
-      input.id = "viscosity"
-      input.name = "dynamicvis"
-      input.className = "text big disabled dynamic-viscosity"
-      input.setAttribute("readonly", "true")
-      input.value = viscosity
-      input.setAttribute("validationError", "false");
+        var input = document.createElement("input")
+        input.id = "viscosity"
+        input.name = "dynamicvis"
+        input.className = "text big disabled dynamic-viscosity"
+        input.setAttribute("readonly", "true")
+        input.value = viscosity
+        input.setAttribute("validationError", "false");
 
-      viscosityInputs.replaceChild(input, viscosityInputs.children[0])
+        viscosityInputs.replaceChild(input, viscosityInputs.children[0])
 
     }
 
@@ -701,10 +701,10 @@ function verifyDens() {
             densityElement.setAttribute("class", "text big red  operating-density")
 
             new Tooltip({
-              target: document.querySelector('#density'),
-              content: "Es muss eine Dichte eingegben werden, die zwischen 0.01 kg/l und 2 kg/l liegt!",
-              classes: 'tooltip-theme-arrows',
-              position: 'bottom center'
+                target: document.querySelector('#density'),
+                content: "Es muss eine Dichte eingegben werden, die zwischen 0.01 kg/l und 2 kg/l liegt!",
+                classes: 'tooltip-theme-arrows',
+                position: 'bottom center'
             })
 
         } else {
@@ -852,23 +852,23 @@ function updateProcessDataLocaleStorage(id) {
 }
 
 function resetProcesData() {
-  localStorage.setItem("fluidInput", "")
-  localStorage.setItem("density", "")
-  localStorage.setItem("viscosity", "")
-  localStorage.setItem("tempOp", "")
-  localStorage.setItem("pressOp", "")
+    localStorage.setItem("fluidInput", "")
+    localStorage.setItem("density", "")
+    localStorage.setItem("viscosity", "")
+    localStorage.setItem("tempOp", "")
+    localStorage.setItem("pressOp", "")
 }
 
 function reset() {
-  localStorage.clear();
-  var checkbox = document.getElementById("checkbox-1-1")
-  if(checkbox.checked) {
-    checkbox.checked = false;
-    adjustLayout(checkbox);
-  }
-  removeProductline();
-  getTechnologies();
-  getFluidsByType();
+    localStorage.clear();
+    var checkbox = document.getElementById("checkbox-1-1")
+    if (checkbox.checked) {
+        checkbox.checked = false;
+        adjustLayout(checkbox);
+    }
+    removeProductline();
+    getTechnologies();
+    getFluidsByType();
 }
 
 /*
@@ -1081,7 +1081,7 @@ $("body").on("click", ".fluid-input", e => {
 $("body").on("change", "#checkbox-1-1", e => {
     var checkBox = document.getElementById(e.target.id);
     if (checkBox.checked) {
-      resetProcesData();
+        resetProcesData();
     }
     localStorage.setItem(e.target.id, checkBox.checked);
     adjustLayout(checkBox);
@@ -1139,7 +1139,7 @@ $("#calculateform").submit(e => {
 });
 
 $("body").on("click", "#resetInput", e => {
-  reset();
+    reset();
 });
 
 /*
